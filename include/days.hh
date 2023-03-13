@@ -3,9 +3,6 @@
 
 #include "enum_str.hh"
 
-///////////////////////////////
-// The enum declaration
-///////////////////////////////
-ENUM_STR(Days, sunday, monday, tuesday, wednesday, thursday, firday, saturday);
+ENUM_STR(Days, Sunday, Monday, Tuesday, Wednesday, Thursday, Firday, Saturday);
 
 #endif  // !DAYS_HH

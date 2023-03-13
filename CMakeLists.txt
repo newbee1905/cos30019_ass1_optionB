@@ -38,10 +38,11 @@ endif()
 
 enable_testing()
 
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/deps/fmt)
-link_libraries(fmt::fmt-header-only)
+# add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/deps/fmt)
+# link_libraries(fmt::fmt-header-only)
 add_compile_definitions(DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/doctest)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 add_subdirectory(src)
 add_subdirectory(test)
 
