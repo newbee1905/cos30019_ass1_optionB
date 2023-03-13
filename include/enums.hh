@@ -1,8 +1,10 @@
 #ifndef ENUM_STR_HH
 #define ENUM_STR_HH
 
+#include <fmt/format.h>
+#include <fmt/ostream.h>
+
 #include <array>
-#include <fstream>
 #include <string_view>
 
 #include "utils.hh"
@@ -21,6 +23,25 @@
   std::ostream& operator<<(std::ostream& o, const ENUM_NAME& e) {      \
     o << GetString##ENUM_NAME(e);                                      \
     return o;                                                          \
+  }                                                                    \
+                                                                       \
+  template <>                                                          \
+  struct fmt::formatter<ENUM_NAME> {                                   \
+    template <typename ParseContext>                                   \
+    constexpr auto parse(ParseContext& ctx);                           \
+    template <typename FormatContext>                                  \
+    auto format(ENUM_NAME const& e, FormatContext& ctx);               \
+  };                                                                   \
+                                                                       \
+  template <typename ParseContext>                                     \
+  constexpr auto fmt::formatter<ENUM_NAME>::parse(ParseContext& ctx) { \
+    return ctx.begin();                                                \
+  }                                                                    \
+                                                                       \
+  template <typename FormatContext>                                    \
+  auto fmt::formatter<ENUM_NAME>::format(ENUM_NAME const& e,           \
+                                         FormatContext& ctx) {         \
+    return fmt::format_to(ctx.out(), "{}", GetString##ENUM_NAME(e));   \
   }
 
 /// Auto generate a constexpr map of enum value
@@ -44,6 +65,25 @@
   std::ostream& operator<<(std::ostream& o, const ENUM_NAME& e) {              \
     o << GetString##ENUM_NAME(e);                                              \
     return o;                                                                  \
+  }                                                                            \
+                                                                               \
+  template <>                                                                  \
+  struct fmt::formatter<ENUM_NAME> {                                           \
+    template <typename ParseContext>                                           \
+    constexpr auto parse(ParseContext& ctx);                                   \
+    template <typename FormatContext>                                          \
+    auto format(ENUM_NAME const& e, FormatContext& ctx);                       \
+  };                                                                           \
+                                                                               \
+  template <typename ParseContext>                                             \
+  constexpr auto fmt::formatter<ENUM_NAME>::parse(ParseContext& ctx) {         \
+    return ctx.begin();                                                        \
+  }                                                                            \
+                                                                               \
+  template <typename FormatContext>                                            \
+  auto fmt::formatter<ENUM_NAME>::format(ENUM_NAME const& e,                   \
+                                         FormatContext& ctx) {                 \
+    return fmt::format_to(ctx.out(), "{}", GetString##ENUM_NAME(e));           \
   }
 
 #endif  // !ENUM_STR_HH
