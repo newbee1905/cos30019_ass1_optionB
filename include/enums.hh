@@ -2,6 +2,7 @@
 #define ENUM_STR_HH
 
 #include <array>
+#include <fstream>
 #include <string_view>
 
 #include "utils.hh"
@@ -16,6 +17,10 @@
       kd::split<va_len>(CAT(__VA_ARGS__));                             \
   constexpr std::string_view GetString##ENUM_NAME(ENUM_NAME index) {   \
     return __tag_##ENUM_NAME__[index];                                 \
+  }                                                                    \
+  std::ostream& operator<<(std::ostream& o, const ENUM_NAME& e) {      \
+    o << GetString##ENUM_NAME(e);                                      \
+    return o;                                                          \
   }
 
 /// Auto generate a constexpr map of enum value
@@ -35,6 +40,10 @@
   }                                                                            \
   constexpr ENUM_NAME GetEnum##ENUM_NAME(const std::string_view k) {           \
     return __map_##ENUM_NAME__[k];                                             \
+  }                                                                            \
+  std::ostream& operator<<(std::ostream& o, const ENUM_NAME& e) {              \
+    o << GetString##ENUM_NAME(e);                                              \
+    return o;                                                                  \
   }
 
 #endif  // !ENUM_STR_HH

@@ -13,5 +13,6 @@ signed main(int argc, char **argv) {
   std::string_view file = argv[1];
   std::string_view method = argv[2];
 
+  std::cout << Methods::BFS;
   std::cout << "You select method " << method << ' ' << GetEnumMethods(method);
 }
