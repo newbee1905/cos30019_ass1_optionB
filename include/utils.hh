@@ -5,9 +5,12 @@
 #ifndef UTILS_HH
 #define UTILS_HH
 
+#include "scn/detail/fwd.h"
 #include <algorithm>
 #include <array>
 #include <exception>
+#include <ext/stdio_filebuf.h>
+#include <fstream>
 #include <iterator>
 #include <string_view>
 
@@ -25,16 +28,14 @@ namespace kd {
 ///
 /// However, for msvc, this version has less
 /// lines of asm code
-template <typename T1, typename T2>
-struct pair {
+template <typename T1, typename T2> struct pair {
   T1 fst;
   T2 sec;
 };
 
 /// get the number of element inside __VA_ARGS__
 /// at compile time
-template <typename... Args>
-constexpr std::size_t va_count(Args &&...) {
+template <typename... Args> constexpr std::size_t va_count(Args &&...) {
   return sizeof...(Args);
 }
 
@@ -49,7 +50,7 @@ constexpr std::array<std::string_view, N> split(std::string_view str,
   for (std::size_t i = 0; i < N && end != std::string_view::npos; ++i) {
     end = str.find_first_of(delim, start);
     arr[i] = str.substr(start, end - start);
-    start = end + 2;  // remove the space after the ','
+    start = end + 2; // remove the space after the ','
   }
 
   return arr;
@@ -59,8 +60,8 @@ constexpr std::array<std::string_view, N> split(std::string_view str,
 /// return an array of enum with
 /// its string and index value
 template <std::size_t N, typename E>
-constexpr std::array<kd::pair<std::string_view, E>, N> split_enum(
-    std::string_view str, char delim = ',') {
+constexpr std::array<kd::pair<std::string_view, E>, N>
+split_enum(std::string_view str, char delim = ',') {
   std::array<kd::pair<std::string_view, E>, N> arr{};
   std::size_t start = 0, end = 0;
 
@@ -70,7 +71,7 @@ constexpr std::array<kd::pair<std::string_view, E>, N> split_enum(
         str.substr(start, end - start),
         E(i),
     };
-    start = end + 2;  // remove the space after the ','
+    start = end + 2; // remove the space after the ','
   }
 
   return arr;
@@ -80,8 +81,7 @@ constexpr std::array<kd::pair<std::string_view, E>, N> split_enum(
 /// Linear search instead of log N
 /// Will be optimised by compiler and more suitable
 /// for small map
-template <typename key, typename val, std::size_t size>
-struct map {
+template <typename key, typename val, std::size_t size> struct map {
   std::array<kd::pair<key, val>, size> data;
 
   [[nodiscard]] constexpr val at(const key &k) const {
@@ -96,6 +96,52 @@ struct map {
   [[nodiscard]] constexpr val operator[](const key &k) const { return at(k); }
 };
 
-};  // namespace kd
+typedef std::basic_ofstream<char>::__filebuf_type buffer_t;
+typedef __gnu_cxx::stdio_filebuf<char> io_buffer_t;
+FILE *cfile_impl(buffer_t *const fb);
 
-#endif  // !UTILS_HH
+FILE *cfile(std::ofstream const &ofs);
+FILE *cfile(std::ifstream const &ifs);
+
+// trim from start (in place)
+static inline void ltrim(std::string &s) {
+  s.erase(s.begin(),
+          std::find_if(s.begin(), s.end(),
+                       std::not1(std::ptr_fun<int, int>(std::isspace))));
+}
+
+// trim from end (in place)
+static inline void rtrim(std::string &s) {
+  s.erase(std::find_if(s.rbegin(), s.rend(),
+                       std::not1(std::ptr_fun<int, int>(std::isspace)))
+              .base(),
+          s.end());
+}
+
+// trim from both ends (in place)
+static inline void trim(std::string &s) {
+  rtrim(s);
+  ltrim(s);
+}
+
+// trim from start (copying)
+static inline std::string ltrim_copy(std::string s) {
+  ltrim(s);
+  return s;
+}
+
+// trim from end (copying)
+static inline std::string rtrim_copy(std::string s) {
+  rtrim(s);
+  return s;
+}
+
+// trim from both ends (copying)
+static inline std::string trim_copy(std::string s) {
+  trim(s);
+  return s;
+}
+
+}; // namespace kd
+
+#endif // !UTILS_HH

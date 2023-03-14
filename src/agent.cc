@@ -1,5 +1,0 @@
-class Agent {
-private:
-
-public:
-};

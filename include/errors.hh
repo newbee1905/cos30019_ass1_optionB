@@ -12,6 +12,8 @@
 #include <stdexcept>
 #include <string>
 
+#include "fmt/core.h"
+
 namespace kd {
 
 /// Create a custom class to handle runtime error
@@ -21,12 +23,21 @@ class runtime_error : public std::runtime_error {
   std::string msg;
 
  public:
-  runtime_error(const std::string &arg, const char *file, int line);
-  ~my_exception() throw() {}
+  runtime_error(const std::string &arg, const char *file, int line)
+      : std::runtime_error(arg) {
+    msg = fmt::format("{}:{}: {}", file, line, arg);
+  }
+  ~runtime_error() throw() {}
 
   const char *what() const throw();
 };
-#define throw_line(arg) throw my_exception(arg, __FILE__, __LINE__);
 };  // namespace kd
 
-#endif // !ERRORS_HH
+#define throw_line(arg) throw kd::runtime_error(arg, __FILE__, __LINE__)
+
+#define assert_line(cond, arg)  \
+  do {                          \
+    if (!cond) throw_line(arg); \
+  } while (0)
+
+#endif  // !ERRORS_HH

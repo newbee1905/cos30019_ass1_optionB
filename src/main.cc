@@ -1,34 +1,62 @@
 #include <stdio.h>
 
+#include <ext/stdio_filebuf.h>
 #include <fstream>
 #include <iostream>
+#include <string>
 #include <string_view>
 
+#include "agent.hh"
 #include "e_methods.hh"
+#include "errors.hh"
 #include "fmt/core.h"
+#include "grid.hh"
 #include "scn/detail/file.h"
+#include "scn/scan/getline.h"
+#include "scn/scan/scan.h"
 #include "scn/scn.h"
+#include "utils.hh"
 
-signed main(int argc, char** argv) {
+signed main(int argc, char **argv) {
   if (argc < 3) {
-    fmt::print(stderr,
-               "Not enough arguments. "
-               "Please use: ./search <FILEPATH> <METHOD>\n");
+    fmt::print(stderr, "Not enough arguments. "
+                       "Please use: ./search <FILEPATH> <METHOD>\n");
     return 1;
   }
 
-  char* inp_file_name = argv[1];
-  std::string_view method = argv[2];
+  const char *inp_file_name = argv[1];
+  const std::string_view method = argv[2];
 
   fmt::print("You select method {}\n", GetEnumMethods(method));
-  auto f = fopen(inp_file_name, "r");
-  scn::file inp_file{f};
-  std::string line;
-  for (auto result = scn::getline(inp_file, line);
-       result.error() != scn::error::end_of_range;
-       result = scn::getline(result.range(), line)) {
-    fmt::println("{}", line);
-  }
+  auto inp_file = fopen(inp_file_name, "r");
 
-  fclose(f);
+  assert_line(inp_file, "Failed to open input file.");
+
+  std::size_t n, m;
+  fscanf(inp_file, "[%ld, %ld]\n", &n, &m);
+  Grid grid(n, m);
+
+  Agent a;
+  fscanf(inp_file, "(%d,%d)\n", &a.x, &a.y);
+
+  // use tmp to scanf after ')'
+  // to force to stop at the line for getting
+  // location of goals
+  for (int x{}, y{}, tmp{}; fscanf(inp_file, "(%d, %d)%c| ", &x, &y, &tmp);
+       grid.insert_goal(x, y))
+    ;
+
+  for (int x{}, y{}, w{}, h{};
+       fscanf(inp_file, "\n(%d, %d, %d, %d)", &y, &x, &w, &h) &&
+       !feof(inp_file);
+       grid.insert_block_area(x, y, w, h))
+    ;
+
+  fclose(inp_file);
+
+  for (int i{}; i < n; ++i) {
+    for (int j{}; j < m; ++j)
+      fmt::print("{}, ", grid.at(i, j));
+    fmt::println("");
+  }
 }
