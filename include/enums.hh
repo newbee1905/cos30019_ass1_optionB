@@ -20,10 +20,6 @@
   constexpr std::string_view GetString##ENUM_NAME(ENUM_NAME index) {   \
     return __tag_##ENUM_NAME__[index];                                 \
   }                                                                    \
-  std::ostream& operator<<(std::ostream& o, const ENUM_NAME& e) {      \
-    o << GetString##ENUM_NAME(e);                                      \
-    return o;                                                          \
-  }                                                                    \
                                                                        \
   template <>                                                          \
   struct fmt::formatter<ENUM_NAME> {                                   \
@@ -61,10 +57,6 @@
   }                                                                            \
   constexpr ENUM_NAME GetEnum##ENUM_NAME(const std::string_view k) {           \
     return __map_##ENUM_NAME__[k];                                             \
-  }                                                                            \
-  std::ostream& operator<<(std::ostream& o, const ENUM_NAME& e) {              \
-    o << GetString##ENUM_NAME(e);                                              \
-    return o;                                                                  \
   }                                                                            \
                                                                                \
   template <>                                                                  \
