@@ -15,6 +15,7 @@ add_custom_target(update_dependencies
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set(CMAKE_CXX_EXTENSIONS OFF)
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2 -mbmi2 -Ofast -flto")
 
 if(MSVC)
 	# add_compile_options(/fsanitize=address)
@@ -40,8 +41,6 @@ enable_testing()
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/deps/fmt)
 link_libraries(fmt::fmt-header-only)
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/deps/scnlib)
-link_libraries(scn::scn-header-only)
 add_compile_definitions(DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/doctest)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)

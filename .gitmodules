@@ -4,6 +4,3 @@
 [submodule "deps/fmt"]
 	path = deps/fmt
 	url = https://github.com/fmtlib/fmt
-[submodule "deps/scnlib"]
-	path = deps/scnlib
-	url = https://github.com/eliaskosunen/scnlib
