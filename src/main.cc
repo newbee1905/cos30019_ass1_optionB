@@ -11,10 +11,6 @@
 #include "errors.hh"
 #include "fmt/core.h"
 #include "grid.hh"
-#include "scn/detail/file.h"
-#include "scn/scan/getline.h"
-#include "scn/scan/scan.h"
-#include "scn/scn.h"
 #include "utils.hh"
 
 signed main(int argc, char **argv) {

@@ -5,7 +5,6 @@
 #ifndef UTILS_HH
 #define UTILS_HH
 
-#include "scn/detail/fwd.h"
 #include <algorithm>
 #include <array>
 #include <cctype>

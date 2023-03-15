@@ -8,9 +8,9 @@
 
 class Agent {
 private:
-  constexpr std::array<std::function<void(Agent &a, Grid &g)>,
-                       GetEnumMethodsLength()>
-      m_methods;
+  /* constexpr std::array<std::function<void(Agent &a, Grid &g)>, */
+  /*                      GetEnumMethodsLength()> */
+  /*     m_methods; */
 
 public:
   kd::pair<int, int> pos;
