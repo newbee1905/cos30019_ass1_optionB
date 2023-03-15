@@ -37,7 +37,7 @@ signed main(int argc, char **argv) {
   Grid grid(n, m);
 
   Agent a;
-  fscanf(inp_file, "(%d,%d)\n", &a.x, &a.y);
+  fscanf(inp_file, "(%d,%d)\n", &a.pos.fst, &a.pos.sec);
 
   // use tmp to scanf after ')'
   // to force to stop at the line for getting

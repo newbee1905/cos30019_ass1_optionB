@@ -50,7 +50,7 @@ constexpr std::array<std::string_view, N> split(std::string_view str,
   std::array<std::string_view, N> arr{};
   std::size_t start = 0, end = 0;
 
-  for (std::size_t i = 0; i < N && end != std::string_view::npos; ++i) {
+  for (std::size_t i{}; i < N && end != std::string_view::npos; ++i) {
     end = str.find_first_of(delim, start);
     arr[i] = str.substr(start, end - start);
     start = end + 2; // remove the space after the ','
@@ -68,7 +68,7 @@ split_enum(std::string_view str, char delim = ',') {
   std::array<kd::pair<std::string_view, E>, N> arr{};
   std::size_t start = 0, end = 0;
 
-  for (std::size_t i = 0; i < N && end != std::string_view::npos; ++i) {
+  for (std::size_t i{}; i < N && end != std::string_view::npos; ++i) {
     end = str.find_first_of(delim, start);
     arr[i] = kd::pair<std::string_view, E>{
         str.substr(start, end - start),
