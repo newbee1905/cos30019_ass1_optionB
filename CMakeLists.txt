@@ -19,7 +19,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 if(MSVC)
 	# add_compile_options(/fsanitize=address)
 	set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} \mavx2 \mbmi2 \Ofast \flto")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /arch:AVX2 /Ox /GL /fp:strict")
 	add_compile_options(/Zc:__cplusplus) # see https://docs.microsoft.com/en-us/cpp/build/reference/zc-cplusplus?view=msvc-160 for detail
 else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2 -mbmi2 -Ofast -flto")
