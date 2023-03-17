@@ -7,12 +7,11 @@
 
 #include <assert.h>
 
+#include "fmt/core.h"
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
 #include <string>
-
-#include "fmt/core.h"
 
 namespace kd {
 
@@ -35,6 +34,10 @@ public:
 
 #define throw_line(arg) throw kd::runtime_error(arg, __FILE__, __LINE__)
 
-#define assert_line(cond, arg) cond ? true : throw_line(arg)
+#define assert_line(cond, arg)                                                 \
+  do {                                                                         \
+    if (!cond)                                                                 \
+      throw_line(arg);                                                         \
+  } while (0)
 
 #endif // !ERRORS_HH

@@ -32,14 +32,13 @@ signed main(int argc, char **argv) {
   const std::string_view method = argv[2];
 
   fmt::print("You select method {}\n", GetEnumMethods(method));
-  auto inp_file = fopen(inp_file_name, "r");
+  auto inp_file = FOPEN(inp_file_name, "r");
 
   assert_line(inp_file, "Failed to open input file.");
 
   std::size_t n, m;
 #ifdef __linux__
-  assert_line(FSCANF(inp_file, "[%ld, %ld]\n", &n, &m),
-              "Failed getting maze's size.");
+  FSCANF(inp_file, "[%ld, %ld]\n", &n, &m);
 #elif _WIN32
   assert_line(FSCANF(inp_file, "[%lld, %lld]\n", &n, &m),
               "Failed getting maze's size.");
@@ -47,15 +46,13 @@ signed main(int argc, char **argv) {
   Grid grid(n, m);
 
   Agent a;
-  assert_line(FSCANF(inp_file, "(%d,%d)\n", &a.pos.sec, &a.pos.fst),
-              "Failed getting starting point.");
+  FSCANF(inp_file, "(%d,%d)\n", &a.pos.sec, &a.pos.fst);
 
   // use tmp to scanf after ')'
   // to force to stop at the line for getting
   // location of goals
   for (int x{}, y{}, tmp{};
-       assert_line(FSCANF(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp),
-                   "Failed getting goals.");
+       FSCANF(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp);
        grid.insert_goal(x, y))
     ;
 
