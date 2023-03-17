@@ -10,7 +10,6 @@
 #include <cctype>
 #include <cwchar>
 #include <exception>
-#include <ext/stdio_filebuf.h>
 #include <fstream>
 #include <functional>
 #include <iterator>
@@ -120,13 +119,6 @@ template <typename key, typename val, std::size_t size> struct map {
 
   [[nodiscard]] constexpr val operator[](const key &k) const { return at(k); }
 };
-
-typedef std::basic_ofstream<char>::__filebuf_type buffer_t;
-typedef __gnu_cxx::stdio_filebuf<char> io_buffer_t;
-FILE *cfile_impl(buffer_t *const fb);
-
-FILE *cfile(std::ofstream const &ofs);
-FILE *cfile(std::ifstream const &ifs);
 
 }; // namespace kd
 
