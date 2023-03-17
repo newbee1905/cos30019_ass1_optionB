@@ -16,9 +16,6 @@
 #include <iterator>
 #include <string_view>
 
-/// convert the list of __VA_ARGS__ into a string
-#define CAT(...) #__VA_ARGS__
-
 namespace kd {
 
 /// No constructor custom struct
@@ -33,6 +30,14 @@ namespace kd {
 template <typename T1, typename T2> struct pair {
   T1 fst;
   T2 sec;
+
+  inline bool operator==(const pair<T1, T2> &rhs) {
+    return this->fst == rhs.fst && this->sec == rhs.sec;
+  }
+
+  inline bool operator!=(const pair<T1, T2> &rhs) {
+    return this->fst != rhs.fst || this->sec != rhs.sec;
+  }
 };
 
 /// get the number of element inside __VA_ARGS__
