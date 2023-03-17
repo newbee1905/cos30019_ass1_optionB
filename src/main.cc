@@ -63,6 +63,10 @@ signed main(int argc, char **argv) {
 
   a.search(GetEnumMethods(method), grid, res);
 
+  if (res.empty()) {
+    return 1;
+  }
+
   for (int i{}; i < n; ++i) {
     for (int j{}; j < m; ++j)
       fmt::print("{}, ", grid.at(i, j));
