@@ -7,6 +7,7 @@
 #include <string_view>
 
 #include "agent.hh"
+#include "e_action.hh"
 #include "e_methods.hh"
 #include "errors.hh"
 #include "fmt/core.h"
@@ -33,13 +34,13 @@ signed main(int argc, char **argv) {
   Grid grid(n, m);
 
   Agent a;
-  fscanf(inp_file, "(%d,%d)\n", &a.pos.fst, &a.pos.sec);
+  fscanf(inp_file, "(%d,%d)\n", &a.pos.sec, &a.pos.fst);
 
   // use tmp to scanf after ')'
   // to force to stop at the line for getting
   // location of goals
   for (int x{}, y{}, tmp{};
-       fscanf(inp_file, "(%d, %d)%c| ", &x, &y, (char *)&tmp);
+       fscanf(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp);
        grid.insert_goal(x, y))
     ;
 
@@ -56,4 +57,20 @@ signed main(int argc, char **argv) {
       fmt::print("{}, ", grid.at(i, j));
     fmt::println("");
   }
+  fmt::println("");
+
+  std::vector<Action> res;
+
+  a.search(GetEnumMethods(method), grid, res);
+
+  for (int i{}; i < n; ++i) {
+    for (int j{}; j < m; ++j)
+      fmt::print("{}, ", grid.at(i, j));
+    fmt::println("");
+  }
+  fmt::println("");
+
+  // Print the route
+  for (std::size_t i = res.size(); i-- > 0; fmt::print("{}; ", res[i]))
+    ;
 }

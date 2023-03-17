@@ -3,6 +3,6 @@
 
 #include "enums.hh"
 
-ENUM_STR(BlockState, EMPTY, BLOCK, VISITED);
+ENUM_STR(BlockState, EMPTY, BLOCK, VISIT);
 
-#endif  // !ENUM_BLOCK_HH
+#endif // !ENUM_BLOCK_HH

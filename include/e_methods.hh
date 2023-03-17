@@ -5,4 +5,4 @@
 
 ENUM_MAP(Methods, DFS, BFS, GBFS, AS, CUS1, CUS2);
 
-#endif  // !ENUM_METHODS_HH
+#endif // !ENUM_METHODS_HH

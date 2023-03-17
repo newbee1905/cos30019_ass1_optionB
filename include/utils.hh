@@ -16,6 +16,8 @@
 #include <iterator>
 #include <string_view>
 
+// TODO may consider split the ultils.hh file into many
+// smaller file
 namespace kd {
 
 /// No constructor custom struct
@@ -30,15 +32,31 @@ namespace kd {
 template <typename T1, typename T2> struct pair {
   T1 fst;
   T2 sec;
-
-  inline bool operator==(const pair<T1, T2> &rhs) {
-    return this->fst == rhs.fst && this->sec == rhs.sec;
-  }
-
-  inline bool operator!=(const pair<T1, T2> &rhs) {
-    return this->fst != rhs.fst || this->sec != rhs.sec;
-  }
 };
+
+template <typename T1, typename T2>
+inline bool operator==(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs) {
+  return lhs.fst == rhs.fst && lhs.sec == rhs.sec;
+}
+
+template <typename T1, typename T2>
+inline bool operator!=(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs) {
+  return lhs.fst != rhs.fst || lhs.sec != rhs.sec;
+}
+
+template <typename T1, typename T2>
+inline bool operator<(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs) {
+  if (lhs.fst < rhs.fst)
+    return true;
+  if (lhs.fst == rhs.fst && lhs.sec < rhs.sec)
+    return true;
+  return false;
+}
+
+template <typename T1, typename T2>
+inline bool operator>(const pair<T1, T2> &lhs, const pair<T1, T2> &rhs) {
+  return rhs < lhs;
+}
 
 /// get the number of element inside __VA_ARGS__
 /// at compile time

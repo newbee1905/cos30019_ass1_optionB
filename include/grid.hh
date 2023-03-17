@@ -10,15 +10,18 @@
 #include "e_block.hh"
 #include "utils.hh"
 
+typedef kd::pair<int, int> Cell;
+
 class Grid {
 private:
-  std::vector<kd::pair<int, int>> goals;
-  std::size_t n, m;
-
   // 2D array in form of a 1D array
   std::vector<BlockState> m_grid;
 
 public:
+  // TODO: Use priority queue
+  std::vector<kd::pair<int, int>> goals;
+  std::size_t n, m;
+
   Grid(int n, int m) : n(n), m(m) {
     // count from 1
     m_grid.reserve(n * m);
@@ -36,9 +39,9 @@ public:
   void insert_goal(const kd::pair<int, int> &p);
   void insert_goal(const int &x, const int &y);
 
-  inline BlockState at(const kd::pair<int, int> &p);
-  BlockState at(const int &x, const int &y);
-  BlockState operator[](const kd::pair<int, int> &p);
+  inline BlockState &at(const kd::pair<int, int> &p);
+  BlockState &at(const int &x, const int &y);
+  BlockState &operator[](const kd::pair<int, int> &p);
 
   ~Grid() {
     // free vector
