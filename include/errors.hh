@@ -22,7 +22,7 @@ namespace kd {
 class runtime_error : public std::runtime_error {
   std::string msg;
 
- public:
+public:
   runtime_error(const std::string &arg, const char *file, int line)
       : std::runtime_error(arg) {
     msg = fmt::format("{}:{}: {}", file, line, arg);
@@ -31,13 +31,10 @@ class runtime_error : public std::runtime_error {
 
   const char *what() const throw();
 };
-};  // namespace kd
+}; // namespace kd
 
 #define throw_line(arg) throw kd::runtime_error(arg, __FILE__, __LINE__)
 
-#define assert_line(cond, arg)  \
-  do {                          \
-    if (!cond) throw_line(arg); \
-  } while (0)
+#define assert_line(cond, arg) cond ? true : throw_line(arg)
 
-#endif  // !ERRORS_HH
+#endif // !ERRORS_HH
