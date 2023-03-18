@@ -13,13 +13,9 @@
 #include "grid.hh"
 #include "utils.hh"
 
-#ifdef __linux__
-#define FSCANF fscanf
-#define FOPEN fopen
-#elif _WIN32
-#define FSCANF fscanf_s
-#define FOPEN fopen_s
-#endif
+// turn of warning of not using *_s function
+// on windows
+#define _CRT_SECURE_NO_DEPRECATE
 
 signed main(int argc, char **argv) {
   if (argc < 3) {
@@ -32,21 +28,21 @@ signed main(int argc, char **argv) {
   const std::string_view method = argv[2];
 
   fmt::print("You select method {}\n", GetEnumMethods(method));
-  auto inp_file = FOPEN(inp_file_name, "r");
+  auto inp_file = fopen(inp_file_name, "r");
 
   assert_line(inp_file, "Failed to open input file.");
 
   std::size_t n, m;
 #ifdef __linux__
-  FSCANF(inp_file, "[%ld, %ld]\n", &n, &m);
+  fscanf(inp_file, "[%ld, %ld]\n", &n, &m);
 #elif _WIN32
-  assert_line(FSCANF(inp_file, "[%lld, %lld]\n", &n, &m),
-              "Failed getting maze's size.");
+  // size_t in windows is long long int
+  fscanf(inp_file, "[%lld, %lld]\n", &n, &m);
 #endif
   Grid grid(n, m);
 
   Agent a;
-  FSCANF(inp_file, "(%d,%d)\n", &a.pos.sec, &a.pos.fst);
+  fscanf(inp_file, "(%d,%d)\n", &a.pos.sec, &a.pos.fst);
 
   fmt::println("({}, {})\n({}, {})", n, m, a.pos.fst, a.pos.sec);
 
