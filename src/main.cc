@@ -61,8 +61,8 @@ signed main(int argc, char **argv) {
   /*      fmt::println("({}, {})", x, y), grid.insert_goal(x, y)) */
   /*   ; */
 
-  int state = 1;
-  for (int x{}, y{}, tmp{}; state;) {
+  int state = 3;
+  for (int x{}, y{}, tmp{}; state == 3;) {
     state = fscanf(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp);
     fmt::println("{}", state);
     fmt::println("({}, {})", x, y);
