@@ -56,10 +56,18 @@ signed main(int argc, char **argv) {
   // use tmp to scanf after ')'
   // to force to stop at the line for getting
   // location of goals
-  for (int x{}, y{}, tmp{};
-       fscanf(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp);
-       fmt::println("({}, {})", x, y), grid.insert_goal(x, y))
-    ;
+  /* for (int x{}, y{}, tmp{}; */
+  /*      fscanf(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp); */
+  /*      fmt::println("({}, {})", x, y), grid.insert_goal(x, y)) */
+  /*   ; */
+
+  int state = 1;
+  for (int x{}, y{}, tmp{}; state;) {
+    state = fscanf(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp);
+    fmt::println("{}", state);
+    fmt::println("({}, {})", x, y);
+    grid.insert_goal(x, y);
+  }
 
   for (int x{}, y{}, w{}, h{};
        fscanf(inp_file, "\n(%d, %d, %d, %d)", &y, &x, &w, &h) &&
