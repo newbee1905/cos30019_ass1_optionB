@@ -61,6 +61,6 @@ jobs:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: windows
         prerelease: true
-        title: "Development Build-${{ NOW }}"
+        title: "Development Build-${{ env.NOW }}"
         files: |
           build/bin/*
