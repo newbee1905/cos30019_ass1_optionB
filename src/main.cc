@@ -16,13 +16,13 @@
 // turn of warning of not using fopen_s function
 // on windows
 #define _CRT_SECURE_NO_DEPRECATE
-/* #define _CRT_SECURE_NO_WARNINGS */
+#define _CRT_SECURE_NO_WARNINGS
 
 #ifdef __linux__
 #define CHAR(tmp) (char *)&tmp
 #elif _WIN32
 #define fscanf fscanf_s
-#define CHAR(tmp) (char *)&tmp, 2
+#define CHAR(tmp) (char *)&tmp, 1
 #endif
 
 signed main(int argc, char **argv) {
@@ -54,19 +54,16 @@ signed main(int argc, char **argv) {
   fscanf(inp_file, "(%d,%d)\n", &pos.sec, &pos.fst);
   a.set_pos(pos);
 
-  fmt::println("({}, {})\n({}, {})", n, m, a.pos().fst, a.pos().sec);
-
   // use tmp to scanf after ')'
   // to force to stop at the line for getting
   // location of goals
   for (int x{}, y{}, tmp{}; fscanf(inp_file, "(%d, %d)%c| ", &y, &x, CHAR(tmp));
-       fmt::println("({}, {}) {}", x, y, tmp), grid.insert_goal(x, y))
+       grid.insert_goal(x, y))
     ;
 
   for (int x{}, y{}, w{}, h{};
        fscanf(inp_file, "\n(%d, %d, %d, %d)", &y, &x, &w, &h) &&
        !feof(inp_file);
-       fmt::println("({}, {}, {}, {})", x, y, w, h),
        grid.insert_block_area(x, y, w, h))
     ;
 
