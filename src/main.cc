@@ -48,7 +48,7 @@ signed main(int argc, char **argv) {
   Agent a;
   FSCANF(inp_file, "(%d,%d)\n", &a.pos.sec, &a.pos.fst);
 
-  fmt::println("(%d, %d)\n(%d, %d)", n, m, a.pos.fst, a.pos.sec);
+  fmt::println("({}, {})\n({}, {})", n, m, a.pos.fst, a.pos.sec);
 
   // use tmp to scanf after ')'
   // to force to stop at the line for getting
