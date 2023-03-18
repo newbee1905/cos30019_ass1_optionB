@@ -18,6 +18,7 @@ public:
   ~Agent() {}
 
   void dfs(Grid &grid, std::vector<Action> &res);
+  void bfs(Grid &grid, std::vector<Action> &res);
 
   Cell &pos() { return m_pos; }
   void set_pos(const Cell &pos) { m_pos = pos; }
@@ -27,6 +28,8 @@ public:
     switch (method) {
     case Methods::DFS:
       return dfs(grid, res);
+    case Methods::BFS:
+      return bfs(grid, res);
     default:
       fmt::print(stderr, "This method is not implemented yet or not existed");
       return;
