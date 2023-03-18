@@ -54,11 +54,13 @@ jobs:
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest -C $BUILD_TYPE
 
+    - name: Set current date as env variable
+      run: echo "NOW=$(Get-Date -Format '%Y-%m-%dT%H:%M:%S')" >> $GITHUB_ENV
     - uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: windows
         prerelease: true
-        title: "Development Build"
+        title: "Development Build-${{ NOW }}"
         files: |
           build/bin/*
