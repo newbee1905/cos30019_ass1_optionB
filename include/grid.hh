@@ -12,21 +12,27 @@
 
 typedef kd::pair<int, int> Cell;
 
+void operator+=(Cell &lhs, const Cell &rhs);
+Cell operator+(const Cell &lhs, const Cell &rhs);
+
 class Grid {
 private:
   // 2D array in form of a 1D array
   std::vector<BlockState> m_grid;
+  std::size_t m_height, m_width;
 
 public:
   // TODO: Use priority queue
   std::vector<kd::pair<int, int>> m_goals;
-  std::size_t n, m;
 
-  Grid(int n, int m) : n(n), m(m) {
+  Grid(int n, int m) : m_height(n), m_width(m) {
     // count from 1
     m_grid.resize(n * m);
     std::fill(m_grid.begin(), m_grid.end(), BlockState::EMPTY);
   }
+
+  inline int height() const { return m_height; }
+  inline int width() const { return m_width; }
 
   inline void insert_block(const kd::pair<int, int> &p);
   inline void insert_block(const int &x, const int &y);
