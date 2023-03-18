@@ -16,10 +16,7 @@
 // turn of warning of not using fopen_s function
 // on windows
 #define _CRT_SECURE_NO_DEPRECATE
-
-#ifdef _WIN32
-#define fscanf fscanf_s
-#endif
+#define _CRT_SECURE_NO_WARNINGS
 
 signed main(int argc, char **argv) {
   if (argc < 3) {
