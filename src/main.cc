@@ -15,12 +15,12 @@
 
 // turn of warning of not using fopen_s function
 // on windows
-/* #define _CRT_SECURE_NO_DEPRECATE */
-/* #define _CRT_SECURE_NO_WARNINGS */
+#define _CRT_SECURE_NO_DEPRECATE
+#define _CRT_SECURE_NO_WARNINGS
 
-#ifdef _WIN32
-#define fscanf fscanf_s
-#endif
+/* #ifdef _WIN32 */
+/* #define fscanf fscanf_s */
+/* #endif */
 
 signed main(int argc, char **argv) {
   if (argc < 3) {
@@ -57,10 +57,10 @@ signed main(int argc, char **argv) {
   // to force to stop at the line for getting
   // location of goals
   int x, y, tmp;
-  /* fscanf(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp); */
-  /* fmt::println("({}, {})", x, y), grid.insert_goal(x, y); */
-  /* fscanf(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp); */
-  /* fmt::println("({}, {})", x, y), grid.insert_goal(x, y); */
+  fscanf(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp);
+  fmt::println("({}, {})", x, y), grid.insert_goal(x, y);
+  fscanf(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp);
+  fmt::println("({}, {})", x, y), grid.insert_goal(x, y);
   /* for (int x{}, y{}, tmp{}; */
   /*      fscanf(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp); */
   /*      fmt::println("({}, {})", x, y), grid.insert_goal(x, y)) */
