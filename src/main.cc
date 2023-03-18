@@ -50,8 +50,7 @@ signed main(int argc, char **argv) {
   // use tmp to scanf after ')'
   // to force to stop at the line for getting
   // location of goals
-  for (int x{}, y{}, tmp{};
-       fscanf(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp);
+  for (int x{}, y{}, tmp{}; fscanf(inp_file, "(%d, %d)%c| ", &y, &x, &tmp);
        fmt::println("({}, {})", x, y), grid.insert_goal(x, y))
     ;
   /**/
