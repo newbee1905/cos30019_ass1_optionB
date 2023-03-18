@@ -22,7 +22,7 @@
 #define CHAR(tmp) (char *)&tmp
 #elif _WIN32
 #define fscanf fscanf_s
-#define CHAR(tmp) (char *)&tmp, 1
+#define CHAR(tmp) (char *)&tmp, 2
 #endif
 
 signed main(int argc, char **argv) {
@@ -62,9 +62,11 @@ signed main(int argc, char **argv) {
   for (int x{}, y{}, tmp{}; fscanf(inp_file, "(%d, %d)%c| ", &y, &x, CHAR(tmp));
        fmt::println("({}, {}) {}", x, y, tmp), grid.insert_goal(x, y))
     ;
+  fscanf(inp_file, "\n");
 
   for (int x{}, y{}, w{}, h{};
-       fscanf(inp_file, "(%d, %d, %d, %d)", &y, &x, &w, &h) && !feof(inp_file);
+       fscanf(inp_file, "(%d, %d, %d, %d)\n", &y, &x, &w, &h) &&
+       !feof(inp_file);
        fmt::println("({}, {}, {}, {})", x, y, w, h),
        grid.insert_block_area(x, y, w, h))
     ;
