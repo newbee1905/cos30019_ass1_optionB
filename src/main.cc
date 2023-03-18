@@ -36,7 +36,7 @@ signed main(int argc, char **argv) {
   const std::string_view method = argv[2];
 
   fmt::print("You select method {}\n", GetEnumMethods(method));
-  auto inp_file = fopen(inp_file_name, "r");
+  auto inp_file = fopen(inp_file_name, "rb");
 
   assert_line(inp_file, "Failed to open input file.");
 
