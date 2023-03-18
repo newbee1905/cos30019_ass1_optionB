@@ -48,45 +48,47 @@ signed main(int argc, char **argv) {
   Agent a;
   FSCANF(inp_file, "(%d,%d)\n", &a.pos.sec, &a.pos.fst);
 
+  fmt::println("(%d, %d)\n(%d, %d)", n, m, a.pos.fst, a.pos.sec);
+
   // use tmp to scanf after ')'
   // to force to stop at the line for getting
   // location of goals
-  for (int x{}, y{}, tmp{};
-       FSCANF(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp);
-       grid.insert_goal(x, y))
-    ;
-
-  for (int x{}, y{}, w{}, h{};
-       FSCANF(inp_file, "\n(%d, %d, %d, %d)", &y, &x, &w, &h) &&
-       !feof(inp_file);
-       grid.insert_block_area(x, y, w, h))
-    ;
-
-  fclose(inp_file);
-
-  for (int i{}; i < n; ++i) {
-    for (int j{}; j < m; ++j)
-      fmt::print("{}, ", grid.at(i, j));
-    fmt::println("");
-  }
-  fmt::println("");
-
-  std::vector<Action> res;
-
-  a.search(GetEnumMethods(method), grid, res);
-
-  if (res.empty()) {
-    return 1;
-  }
-
-  for (int i{}; i < n; ++i) {
-    for (int j{}; j < m; ++j)
-      fmt::print("{}, ", grid.at(i, j));
-    fmt::println("");
-  }
-  fmt::println("");
-
-  // Print the route
-  for (std::size_t i = res.size(); i-- > 0; fmt::print("{}; ", res[i]))
-    ;
+  /* for (int x{}, y{}, tmp{}; */
+  /*      FSCANF(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp); */
+  /*      grid.insert_goal(x, y)) */
+  /*   ; */
+  /**/
+  /* for (int x{}, y{}, w{}, h{}; */
+  /*      FSCANF(inp_file, "\n(%d, %d, %d, %d)", &y, &x, &w, &h) && */
+  /*      !feof(inp_file); */
+  /*      grid.insert_block_area(x, y, w, h)) */
+  /*   ; */
+  /**/
+  /* fclose(inp_file); */
+  /**/
+  /* for (int i{}; i < n; ++i) { */
+  /*   for (int j{}; j < m; ++j) */
+  /*     fmt::print("{}, ", grid.at(i, j)); */
+  /*   fmt::println(""); */
+  /* } */
+  /* fmt::println(""); */
+  /**/
+  /* std::vector<Action> res; */
+  /**/
+  /* a.search(GetEnumMethods(method), grid, res); */
+  /**/
+  /* if (res.empty()) { */
+  /*   return 1; */
+  /* } */
+  /**/
+  /* for (int i{}; i < n; ++i) { */
+  /*   for (int j{}; j < m; ++j) */
+  /*     fmt::print("{}, ", grid.at(i, j)); */
+  /*   fmt::println(""); */
+  /* } */
+  /* fmt::println(""); */
+  /**/
+  /* // Print the route */
+  /* for (std::size_t i = res.size(); i-- > 0; fmt::print("{}; ", res[i])) */
+  /*   ; */
 }
