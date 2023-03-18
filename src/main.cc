@@ -18,8 +18,11 @@
 #define _CRT_SECURE_NO_DEPRECATE
 /* #define _CRT_SECURE_NO_WARNINGS */
 
-#ifdef _WIN32
+#ifdef __linux__
+#define CHAR(tmp) (char *)&tmp
+#elif _WIN32
 #define fscanf fscanf_s
+#define CHAR(tmp) (char *)&tmp, 1
 #endif
 
 signed main(int argc, char **argv) {
@@ -56,8 +59,7 @@ signed main(int argc, char **argv) {
   // use tmp to scanf after ')'
   // to force to stop at the line for getting
   // location of goals
-  for (int x{}, y{}, tmp{};
-       fscanf(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp);
+  for (int x{}, y{}, tmp{}; fscanf(inp_file, "(%d, %d)%c| ", &y, &x, CHAR(tmp));
        fmt::println("({}, {}) {}", x, y, tmp), grid.insert_goal(x, y))
     ;
 
