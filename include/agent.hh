@@ -10,12 +10,18 @@
 #include <vector>
 
 class Agent {
+private:
+  kd::pair<int, int> m_pos;
+
 public:
-  kd::pair<int, int> pos;
   Agent() {}
   ~Agent() {}
 
   void dfs(Grid &grid, std::vector<Action> &res);
+
+  Cell &pos() { return m_pos; }
+  void set_pos(const Cell &pos) { m_pos = pos; }
+  void set_pos(const Cell &&pos) { m_pos = std::move(pos); }
 
   void search(Methods method, Grid &grid, std::vector<Action> &res) {
     switch (method) {

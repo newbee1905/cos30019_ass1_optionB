@@ -13,9 +13,9 @@ void Agent::dfs(Grid &grid, std::vector<Action> &res) {
   std::stack<Cell> s;
   std::map<Cell, kd::pair<Cell, Action>> parent;
 
-  parent[this->pos] = kd::pair<Cell, Action>{Cell{-1, -1}, Action::NO_OP};
-  s.push(this->pos);
-  grid[this->pos] = BlockState::VISIT;
+  parent[this->m_pos] = kd::pair<Cell, Action>{Cell{-1, -1}, Action::NO_OP};
+  s.push(this->m_pos);
+  grid[this->m_pos] = BlockState::VISIT;
 
   // TODO: just use the first goal for DFS
   const auto goal = grid.goals[0];
@@ -64,7 +64,7 @@ void Agent::dfs(Grid &grid, std::vector<Action> &res) {
 
   auto cur = goal;
   // Trace back the route
-  for (; cur != this->pos;
+  for (; cur != this->m_pos;
        res.push_back(parent[cur].sec), cur = parent[cur].fst)
     ;
 }

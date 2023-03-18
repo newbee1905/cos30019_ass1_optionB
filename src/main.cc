@@ -43,18 +43,20 @@ signed main(int argc, char **argv) {
   Grid grid(n, m);
 
   Agent a;
-  fscanf(inp_file, "(%d,%d)\n", &a.pos.sec, &a.pos.fst);
+  Cell pos;
+  fscanf(inp_file, "(%d,%d)\n", &pos.sec, &pos.fst);
+  a.set_pos(pos);
 
-  fmt::println("({}, {})\n({}, {})", n, m, a.pos.fst, a.pos.sec);
+  fmt::println("({}, {})\n({}, {})", n, m, a.pos().fst, a.pos().sec);
 
   // use tmp to scanf after ')'
   // to force to stop at the line for getting
   // location of goals
   int x, y, tmp;
-  fscanf(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp);
-  fmt::println("({}, {})", x, y), grid.insert_goal(x, y);
-  fscanf(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp);
-  fmt::println("({}, {})", x, y), grid.insert_goal(x, y);
+  /* fscanf(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp); */
+  /* fmt::println("({}, {})", x, y), grid.insert_goal(x, y); */
+  /* fscanf(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp); */
+  /* fmt::println("({}, {})", x, y), grid.insert_goal(x, y); */
   /* for (int x{}, y{}, tmp{}; */
   /*      fscanf(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp); */
   /*      fmt::println("({}, {})", x, y), grid.insert_goal(x, y)) */
