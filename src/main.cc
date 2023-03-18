@@ -52,22 +52,18 @@ signed main(int argc, char **argv) {
   // use tmp to scanf after ')'
   // to force to stop at the line for getting
   // location of goals
-  /* int x, y, tmp; */
-  /* fscanf(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp); */
-  /* fmt::println("({}, {})", x, y), grid.insert_goal(x, y); */
-  /* fscanf(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp); */
-  /* fmt::println("({}, {})", x, y), grid.insert_goal(x, y); */
   for (int x{}, y{}, tmp{};
        fscanf(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp);
        fmt::println("({}, {})", x, y), grid.insert_goal(x, y))
     ;
 
-  /* for (int x{}, y{}, w{}, h{}; */
-  /*      FSCANF(inp_file, "\n(%d, %d, %d, %d)", &y, &x, &w, &h) && */
-  /*      !feof(inp_file); */
-  /*      grid.insert_block_area(x, y, w, h)) */
-  /*   ; */
-  /**/
+  for (int x{}, y{}, w{}, h{};
+       fscanf(inp_file, "\n(%d, %d, %d, %d)", &y, &x, &w, &h) &&
+       !feof(inp_file);
+       fmt::println("({}, {}, {}, {})", x, y, w, h),
+       grid.insert_block_area(x, y, w, h))
+    ;
+
   fclose(inp_file);
   /**/
   /* for (int i{}; i < n; ++i) { */
