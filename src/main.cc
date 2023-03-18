@@ -60,7 +60,7 @@ signed main(int argc, char **argv) {
   /*      grid.insert_block_area(x, y, w, h)) */
   /*   ; */
   /**/
-  /* fclose(inp_file); */
+  fclose(inp_file);
   /**/
   /* for (int i{}; i < n; ++i) { */
   /*   for (int j{}; j < m; ++j) */
