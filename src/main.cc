@@ -19,7 +19,7 @@
 /* #define _CRT_SECURE_NO_WARNINGS */
 
 #ifdef _WIN32
-#define fscanf fsacnf_s
+#define fscanf fscanf_s
 #endif
 
 signed main(int argc, char **argv) {
