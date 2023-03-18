@@ -64,8 +64,7 @@ signed main(int argc, char **argv) {
     ;
 
   for (int x{}, y{}, w{}, h{};
-       fscanf(inp_file, "\n(%d, %d, %d, %d)", &y, &x, &w, &h) &&
-       !feof(inp_file);
+       fscanf(inp_file, "(%d, %d, %d, %d)", &y, &x, &w, &h) && !feof(inp_file);
        fmt::println("({}, {}, {}, {})", x, y, w, h),
        grid.insert_block_area(x, y, w, h))
     ;
