@@ -13,9 +13,13 @@
 #include "grid.hh"
 #include "utils.hh"
 
-// turn of warning of not using *_s function
+// turn of warning of not using fopen_s function
 // on windows
 #define _CRT_SECURE_NO_DEPRECATE
+
+#ifdef _WIN32
+#define fscanf fscanf_s
+#endif
 
 signed main(int argc, char **argv) {
   if (argc < 3) {
@@ -49,10 +53,10 @@ signed main(int argc, char **argv) {
   // use tmp to scanf after ')'
   // to force to stop at the line for getting
   // location of goals
-  /* for (int x{}, y{}, tmp{}; */
-  /*      FSCANF(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp); */
-  /*      grid.insert_goal(x, y)) */
-  /*   ; */
+  for (int x{}, y{}, tmp{};
+       fscanf(inp_file, "(%d, %d)%c| ", &y, &x, (char *)&tmp);
+       fmt::println("({}, {})", x, y), grid.insert_goal(x, y))
+    ;
   /**/
   /* for (int x{}, y{}, w{}, h{}; */
   /*      FSCANF(inp_file, "\n(%d, %d, %d, %d)", &y, &x, &w, &h) && */
