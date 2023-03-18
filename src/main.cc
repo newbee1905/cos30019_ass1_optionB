@@ -62,40 +62,39 @@ signed main(int argc, char **argv) {
   for (int x{}, y{}, tmp{}; fscanf(inp_file, "(%d, %d)%c| ", &y, &x, CHAR(tmp));
        fmt::println("({}, {}) {}", x, y, tmp), grid.insert_goal(x, y))
     ;
-  fscanf(inp_file, "\n");
 
   for (int x{}, y{}, w{}, h{};
-       fscanf(inp_file, "(%d, %d, %d, %d)\n", &y, &x, &w, &h) &&
+       fscanf(inp_file, "\n(%d, %d, %d, %d)", &y, &x, &w, &h) &&
        !feof(inp_file);
        fmt::println("({}, {}, {}, {})", x, y, w, h),
        grid.insert_block_area(x, y, w, h))
     ;
 
   fclose(inp_file);
-  /**/
-  /* for (int i{}; i < n; ++i) { */
-  /*   for (int j{}; j < m; ++j) */
-  /*     fmt::print("{}, ", grid.at(i, j)); */
-  /*   fmt::println(""); */
-  /* } */
-  /* fmt::println(""); */
-  /**/
-  /* std::vector<Action> res; */
-  /**/
-  /* a.search(GetEnumMethods(method), grid, res); */
-  /**/
-  /* if (res.empty()) { */
-  /*   return 1; */
-  /* } */
-  /**/
-  /* for (int i{}; i < n; ++i) { */
-  /*   for (int j{}; j < m; ++j) */
-  /*     fmt::print("{}, ", grid.at(i, j)); */
-  /*   fmt::println(""); */
-  /* } */
-  /* fmt::println(""); */
-  /**/
-  /* // Print the route */
-  /* for (std::size_t i = res.size(); i-- > 0; fmt::print("{}; ", res[i])) */
-  /*   ; */
+
+  for (int i{}; i < n; ++i) {
+    for (int j{}; j < m; ++j)
+      fmt::print("{}, ", grid.at(i, j));
+    fmt::println("");
+  }
+  fmt::println("");
+
+  std::vector<Action> res;
+
+  a.search(GetEnumMethods(method), grid, res);
+
+  if (res.empty()) {
+    return 1;
+  }
+
+  for (int i{}; i < n; ++i) {
+    for (int j{}; j < m; ++j)
+      fmt::print("{}, ", grid.at(i, j));
+    fmt::println("");
+  }
+  fmt::println("");
+
+  // Print the route
+  for (std::size_t i = res.size(); i-- > 0; fmt::print("{}; ", res[i]))
+    ;
 }
