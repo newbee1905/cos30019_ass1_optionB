@@ -72,29 +72,29 @@ signed main(int argc, char **argv) {
 
   fclose(inp_file);
 
-  for (int i{0}; i < n; ++i) {
-    for (int j{0}; j < m; ++j)
+  for (int i{}; i < n; ++i) {
+    for (int j{}; j < m; ++j)
       fmt::print("{}, ", grid.at(i, j));
     fmt::println("");
   }
   fmt::println("");
 
-  /* std::vector<Action> res; */
-  /**/
-  /* a.search(GetEnumMethods(method), grid, res); */
-  /**/
-  /* if (res.empty()) { */
-  /*   return 1; */
-  /* } */
-  /**/
-  /* for (int i{}; i < n; ++i) { */
-  /*   for (int j{}; j < m; ++j) */
-  /*     fmt::print("{}, ", grid.at(i, j)); */
-  /*   fmt::println(""); */
-  /* } */
-  /* fmt::println(""); */
-  /**/
-  /* // Print the route */
-  /* for (std::size_t i = res.size(); i-- > 0; fmt::print("{}; ", res[i])) */
-  /*   ; */
+  std::vector<Action> res;
+
+  a.search(GetEnumMethods(method), grid, res);
+
+  if (res.empty()) {
+    return 1;
+  }
+
+  for (int i{}; i < n; ++i) {
+    for (int j{}; j < m; ++j)
+      fmt::print("{}, ", grid.at(i, j));
+    fmt::println("");
+  }
+  fmt::println("");
+
+  // Print the route
+  for (std::size_t i = res.size(); i-- > 0; fmt::print("{}; ", res[i]))
+    ;
 }

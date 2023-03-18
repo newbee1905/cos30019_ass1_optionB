@@ -18,7 +18,7 @@ void Agent::dfs(Grid &grid, std::vector<Action> &res) {
   grid[this->m_pos] = BlockState::VISIT;
 
   // TODO: just use the first goal for DFS
-  const auto goal = grid.goals[0];
+  const auto goal = grid.m_goals[0];
   for (auto cur = s.top(); !s.empty(); cur = s.top()) {
     s.pop();
     grid[cur] = BlockState::VISIT;
@@ -65,6 +65,6 @@ void Agent::dfs(Grid &grid, std::vector<Action> &res) {
   auto cur = goal;
   // Trace back the route
   for (; cur != this->m_pos;
-       res.push_back(parent[cur].sec), cur = parent[cur].fst)
+       res.emplace_back(parent[cur].sec), cur = parent[cur].fst)
     ;
 }

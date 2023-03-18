@@ -19,12 +19,12 @@ private:
 
 public:
   // TODO: Use priority queue
-  std::vector<kd::pair<int, int>> goals;
+  std::vector<kd::pair<int, int>> m_goals;
   std::size_t n, m;
 
   Grid(int n, int m) : n(n), m(m) {
     // count from 1
-    m_grid.reserve(n * m);
+    m_grid.resize(n * m);
     std::fill(m_grid.begin(), m_grid.end(), BlockState::EMPTY);
   }
 
@@ -46,7 +46,7 @@ public:
   ~Grid() {
     // free vector
     m_grid.clear();
-    m_grid.resize(0);
+    m_grid.shrink_to_fit();
   }
 };
 

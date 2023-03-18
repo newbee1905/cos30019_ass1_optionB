@@ -25,10 +25,10 @@ void Grid::insert_block_area(const int &x, const int &y, const int &w,
       insert_block(x + i, y + j);
 }
 
-void Grid::insert_goal(const Cell &p) { goals.push_back(p); }
+void Grid::insert_goal(const Cell &p) { m_goals.push_back(p); }
 
 void Grid::insert_goal(const int &x, const int &y) {
-  goals.push_back(Cell{x, y});
+  m_goals.emplace_back(Cell{x, y});
 }
 
 inline BlockState &Grid::at(const Cell &p) { return m_grid[p.fst * m + p.sec]; }
