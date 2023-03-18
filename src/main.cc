@@ -18,7 +18,7 @@
 #define _CRT_SECURE_NO_DEPRECATE
 /* #define _CRT_SECURE_NO_WARNINGS */
 
-#ifdef __WIN32
+#ifdef _WIN32
 #define fscanf fsacnf_s
 #endif
 
