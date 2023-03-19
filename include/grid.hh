@@ -18,7 +18,8 @@ Cell operator+(const Cell &lhs, const Cell &rhs);
 class Grid {
 private:
 	// 2D array in form of a 1D array
-	std::vector<BlockState> m_grid;
+	// TODO: Think of a think way to still able to use BlockState
+	std::vector<int> m_grid;
 	std::size_t m_height, m_width;
 
 public:
@@ -43,9 +44,9 @@ public:
 	void insert_goal(const kd::pair<int, int> &p);
 	void insert_goal(const int &x, const int &y);
 
-	inline BlockState &at(const kd::pair<int, int> &p);
-	BlockState &at(const int &x, const int &y);
-	BlockState &operator[](const kd::pair<int, int> &p);
+	inline int &at(const kd::pair<int, int> &p);
+	int &at(const int &x, const int &y);
+	int &operator[](const kd::pair<int, int> &p);
 
 	~Grid() {
 		// free vector

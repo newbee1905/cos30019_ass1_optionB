@@ -85,7 +85,7 @@ signed main(int argc, char **argv) {
 
 	for (int i{}; i < n; ++i) {
 		for (int j{}; j < m; ++j)
-			fmt::print("{}, ", grid.at(i, j));
+			fmt::print("{}, ", int(grid.at(i, j)));
 		fmt::println("");
 	}
 	fmt::println("");

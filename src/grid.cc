@@ -37,6 +37,6 @@ void Grid::insert_goal(const Cell &p) { m_goals.push_back(p); }
 
 void Grid::insert_goal(const int &x, const int &y) { m_goals.emplace_back(Cell{x, y}); }
 
-inline BlockState &Grid::at(const Cell &p) { return m_grid[p.fst * width() + p.sec]; }
-BlockState &Grid::at(const int &x, const int &y) { return m_grid[x * width() + y]; }
-BlockState &Grid::operator[](const Cell &p) { return at(p); }
+inline int &Grid::at(const Cell &p) { return m_grid[p.fst * width() + p.sec]; }
+int &Grid::at(const int &x, const int &y) { return m_grid[x * width() + y]; }
+int &Grid::operator[](const Cell &p) { return at(p); }

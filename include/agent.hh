@@ -19,22 +19,13 @@ public:
 
 	void dfs(Grid &grid, std::vector<Action> &res);
 	void bfs(Grid &grid, std::vector<Action> &res);
+	void gbfs(Grid &grid, std::vector<Action> &res);
 
 	const Cell &pos() { return m_pos; }
 	void set_pos(const Cell &pos) { m_pos = pos; }
 	void set_pos(const Cell &&pos) { m_pos = std::move(pos); }
 
-	void search(Methods method, Grid &grid, std::vector<Action> &res) {
-		switch (method) {
-		case Methods::DFS:
-			return dfs(grid, res);
-		case Methods::BFS:
-			return bfs(grid, res);
-		default:
-			fmt::print(stderr, "This method is not implemented yet or not existed");
-			return;
-		}
-	}
+	void search(Methods method, Grid &grid, std::vector<Action> &res);
 };
 
 #endif // !AGENT_HH
