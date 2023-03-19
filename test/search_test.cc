@@ -63,3 +63,9 @@ TEST_CASE("BFS") {
 	a.search(Methods::BFS, grid, res);
 	SEARCH_TEST_CONFIRM();
 }
+
+TEST_CASE("GBFS") {
+	SEARCH_TEST_INIT();
+	a.search(Methods::GBFS, grid, res);
+	SEARCH_TEST_CONFIRM();
+}
