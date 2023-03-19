@@ -50,4 +50,4 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
 add_subdirectory(src)
 add_subdirectory(test)
 
-set_target_properties(src PROPERTIES OUTPUT_NAME "search")
+# set_target_properties(src PROPERTIES OUTPUT_NAME "search")
