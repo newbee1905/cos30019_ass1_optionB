@@ -33,8 +33,9 @@ void Agent::bfs(Grid &grid, std::vector<Action> &res) {
 			const auto ncell = cur + c.fst;
 			if (ncell.fst < 0 || ncell.sec < 0 || ncell.fst >= grid.height() || ncell.sec >= grid.width())
 				continue;
-			if (grid[ncell] == BlockState::VISIT || grid[ncell] == BlockState::BLOCK)
+			if (grid[ncell] >= BlockState::BLOCK)
 				continue;
+			grid[ncell] = BlockState::VISIT;
 			q.push(ncell);
 			parent[ncell] = kd::pair<Cell, Action>{cur, c.sec};
 		}
