@@ -24,7 +24,6 @@ void Agent::bfs(Grid &grid, std::vector<Action> &res) {
 	const auto goal = grid.m_goals[0];
 	for (auto cur = q.front(); !q.empty(); cur = q.front()) {
 		q.pop();
-		grid[cur] = BlockState::VISIT;
 
 		if (cur == goal)
 			break;
