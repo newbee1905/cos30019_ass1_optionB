@@ -5,4 +5,4 @@
 
 ENUM_STR(Directions, right, left, up, down);
 
-#endif  // !ENUM_DIRECTIONS_HH
+#endif // !ENUM_DIRECTIONS_HH

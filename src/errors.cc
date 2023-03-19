@@ -6,6 +6,4 @@
 
 #include "fmt/core.h"
 
-const char *kd::runtime_error::what() const throw() {
-  return msg.c_str();
-}
+const char *kd::runtime_error::what() const throw() { return msg.c_str(); }

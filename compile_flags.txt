@@ -1,4 +1,5 @@
 -std=c++17
 -Ideps/fmt/include
 -Ideps/scnlib/include
+-Ideps/doctest
 -Iinclude
