@@ -41,7 +41,7 @@ void kd::Agent::gbfs(kd::Grid &grid, std::vector<Action> &res) {
 			// BLOCK or VISITED
 			if (grid[ncell] >= BlockState::BLOCK)
 				continue;
-			grid[ncell] = dist(ncell, goal);
+			grid[ncell] = dist(ncell, goal) + BlockState::VISIT;
 			q.push(ncell);
 			parent[ncell] = kd::pair<kd::Cell, Action>{cur, c.sec};
 		}
