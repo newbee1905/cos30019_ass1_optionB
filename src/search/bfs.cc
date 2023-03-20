@@ -9,7 +9,7 @@
 #include <queue>
 #include <vector>
 
-void Agent::bfs(kd::Grid &grid, std::vector<Action> &res) {
+void kd::Agent::bfs(kd::Grid &grid, std::vector<Action> &res) {
 	std::queue<kd::Cell> q;
 	std::map<kd::Cell, kd::pair<kd::Cell, Action>> parent;
 

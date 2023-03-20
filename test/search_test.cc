@@ -8,26 +8,26 @@
 #include <algorithm>
 #include <tuple>
 
-constexpr int height                = 5;
-constexpr int width                 = 11;
-constexpr Cell start                = Cell{1, 0};
-constexpr std::array<Cell, 2> goals = {
-		Cell{0,  7},
-    Cell{3, 10}
+constexpr int height                    = 5;
+constexpr int width                     = 11;
+constexpr kd::Cell start                = kd::Cell{1, 0};
+constexpr std::array<kd::Cell, 2> goals = {
+		kd::Cell{0,  7},
+    kd::Cell{3, 10}
 };
-constexpr std::array<std::tuple<Cell, int, int>, 7> blocks = {
-		std::tuple<Cell, int, int>{ Cell{0, 2}, 2, 2},
-      std::tuple<Cell, int, int>{ Cell{0, 8}, 1, 2},
-		std::tuple<Cell, int, int>{Cell{0, 10}, 1, 1},
-      std::tuple<Cell, int, int>{ Cell{3, 2}, 1, 2},
-		std::tuple<Cell, int, int>{ Cell{4, 3}, 3, 1},
-      std::tuple<Cell, int, int>{ Cell{3, 9}, 1, 1},
-		std::tuple<Cell, int, int>{ Cell{4, 8}, 2, 1},
+constexpr std::array<std::tuple<kd::Cell, int, int>, 7> blocks = {
+		std::tuple<kd::Cell, int, int>{ kd::Cell{0, 2}, 2, 2},
+		std::tuple<kd::Cell, int, int>{ kd::Cell{0, 8}, 1, 2},
+		std::tuple<kd::Cell, int, int>{kd::Cell{0, 10}, 1, 1},
+		std::tuple<kd::Cell, int, int>{ kd::Cell{3, 2}, 1, 2},
+		std::tuple<kd::Cell, int, int>{ kd::Cell{4, 3}, 3, 1},
+		std::tuple<kd::Cell, int, int>{ kd::Cell{3, 9}, 1, 1},
+		std::tuple<kd::Cell, int, int>{ kd::Cell{4, 8}, 2, 1},
 };
 
 #define SEARCH_TEST_INIT()                                                                         \
-	Grid grid(height, width);                                                                        \
-	Agent a;                                                                                         \
+	kd::Grid grid(height, width);                                                                    \
+	kd::Agent a;                                                                                     \
 	a.set_pos(start);                                                                                \
 	CHECK(a.pos() == start);                                                                         \
                                                                                                    \
@@ -40,11 +40,11 @@ constexpr std::array<std::tuple<Cell, int, int>, 7> blocks = {
 	std::vector<Action> res
 
 #define SEARCH_TEST_CONFIRM()                                                                      \
-	Cell s = a.pos();                                                                                \
+	kd::Cell s = a.pos();                                                                            \
 	CHECK(s == start);                                                                               \
 	for (std::size_t i = res.size(); i-- > 0;) {                                                     \
 		auto action = res[i];                                                                          \
-		s += CellFromDirection[action];                                                                \
+		s += kd::CellFromDirection[action];                                                            \
 		if (grid[s] == BlockState::EMPTY)                                                              \
 			FAIL(fmt::format("The cell should not be empty after searched: ({}, {})", s.fst, s.sec));    \
 	}                                                                                                \

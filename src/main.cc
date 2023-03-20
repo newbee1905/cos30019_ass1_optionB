@@ -47,10 +47,10 @@ signed main(int argc, char **argv) {
 	// size_t in windows is long long int
 	fscanf(inp_file, "[%lld, %lld]\n", &n, &m);
 #endif
-	Grid grid(n, m);
+	kd::Grid grid(n, m);
 
-	Agent a;
-	Cell pos;
+	kd::Agent a;
+	kd::Cell pos;
 	fscanf(inp_file, "(%d,%d)\n", &pos.sec, &pos.fst);
 	a.set_pos(pos);
 

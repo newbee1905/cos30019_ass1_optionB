@@ -10,7 +10,7 @@
 #include <queue>
 #include <vector>
 
-void Agent::astar(kd::Grid &grid, std::vector<Action> &res) {
+void kd::Agent::astar(kd::Grid &grid, std::vector<Action> &res) {
 	auto cell_cmp = [&](const kd::Cell &a, const kd::Cell &b) { return grid[a] > grid[b]; };
 	auto dist     = [&](const kd::Cell &a, const kd::Cell &b) {
     return std::abs(a.fst - b.fst) + std::abs(a.sec - b.sec);
@@ -42,7 +42,7 @@ void Agent::astar(kd::Grid &grid, std::vector<Action> &res) {
 			// BLOCK or VISITED
 			if (grid[ncell] >= BlockState::BLOCK)
 				continue;
-			grid[ncell] = grid[cur] + 1 + dist(ncell, goal);
+			grid[ncell] = dist(this->pos(), ncell) + dist(ncell, goal);
 			q.push(ncell);
 			parent[ncell] = kd::pair<kd::Cell, Action>{cur, c.sec};
 		}

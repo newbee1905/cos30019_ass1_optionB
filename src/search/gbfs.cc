@@ -9,8 +9,11 @@
 #include <queue>
 #include <vector>
 
-void Agent::gbfs(kd::Grid &grid, std::vector<Action> &res) {
+void kd::Agent::gbfs(kd::Grid &grid, std::vector<Action> &res) {
 	auto cell_cmp = [&](const kd::Cell &a, const kd::Cell &b) { return grid[a] > grid[b]; };
+	auto dist     = [&](const kd::Cell &a, const kd::Cell &b) {
+    return std::abs(a.fst - b.fst) + std::abs(a.sec - b.sec);
+	};
 
 	std::priority_queue<kd::Cell, std::vector<kd::Cell>, decltype(cell_cmp)> q(cell_cmp);
 	std::map<kd::Cell, kd::pair<kd::Cell, Action>> parent;
@@ -38,7 +41,7 @@ void Agent::gbfs(kd::Grid &grid, std::vector<Action> &res) {
 			// BLOCK or VISITED
 			if (grid[ncell] >= BlockState::BLOCK)
 				continue;
-			grid[ncell] = grid[cur] + 1;
+			grid[ncell] = dist(ncell, goal);
 			q.push(ncell);
 			parent[ncell] = kd::pair<kd::Cell, Action>{cur, c.sec};
 		}

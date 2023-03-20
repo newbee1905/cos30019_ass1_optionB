@@ -9,7 +9,7 @@
 #include <stack>
 #include <vector>
 
-void Agent::dfs(kd::Grid &grid, std::vector<Action> &res) {
+void kd::Agent::dfs(kd::Grid &grid, std::vector<Action> &res) {
 	std::stack<kd::Cell> s;
 	std::map<kd::Cell, kd::pair<kd::Cell, Action>> parent;
 
