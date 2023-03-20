@@ -69,3 +69,9 @@ TEST_CASE("GBFS") {
 	a.search(Methods::GBFS, grid, res);
 	SEARCH_TEST_CONFIRM();
 }
+
+TEST_CASE("ASTAR") {
+	SEARCH_TEST_INIT();
+	a.search(Methods::AS, grid, res);
+	SEARCH_TEST_CONFIRM();
+}
