@@ -11,9 +11,12 @@
 #include <vector>
 
 void kd::Agent::astar(kd::Grid &grid, std::vector<Action> &res) {
-	auto cell_cmp = [&](const kd::Cell &a, const kd::Cell &b) { return grid[a] > grid[b]; };
-	auto dist     = [&](const kd::Cell &a, const kd::Cell &b) {
+	auto cell_cmp = [&](const kd::Cell &a, const kd::Cell &b) -> bool { return grid[a] > grid[b]; };
+	auto dist     = [&](const kd::Cell &a, const kd::Cell &b) -> int {
     return std::abs(a.fst - b.fst) + std::abs(a.sec - b.sec);
+	};
+	auto dist_cmp = [&](const kd::Cell &a, const kd::Cell &b, const kd::Cell &goal) -> bool {
+		return dist(a, goal) < dist(b, goal);
 	};
 
 	std::priority_queue<kd::Cell, std::vector<kd::Cell>, decltype(cell_cmp)> q(cell_cmp);
@@ -24,10 +27,11 @@ void kd::Agent::astar(kd::Grid &grid, std::vector<Action> &res) {
       Action::NO_OP
   };
 	q.push(this->m_pos);
-	grid[this->m_pos] = BlockState::VISIT;
-
 	// TODO: just use the first goal for now
 	const auto goal = grid.m_goals[0];
+
+	grid[this->m_pos] = dist(this->m_pos, goal);
+
 	kd::Cell cur;
 	for (cur = q.top(); !q.empty(); cur = q.top()) {
 		q.pop();
@@ -42,7 +46,7 @@ void kd::Agent::astar(kd::Grid &grid, std::vector<Action> &res) {
 			// BLOCK or VISITED
 			if (grid[ncell] >= BlockState::BLOCK)
 				continue;
-			grid[ncell] = dist(this->pos(), ncell) + dist(ncell, goal);
+			grid[ncell] = grid[cur] + dist_cmp(cur, ncell, goal) + 1;
 			q.push(ncell);
 			parent[ncell] = kd::pair<kd::Cell, Action>{cur, c.sec};
 		}
