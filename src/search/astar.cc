@@ -15,9 +15,6 @@ void kd::Agent::astar(kd::Grid &grid, std::vector<Action> &res) {
 	auto dist     = [&](const kd::Cell &a, const kd::Cell &b) -> int {
     return std::abs(a.fst - b.fst) + std::abs(a.sec - b.sec);
 	};
-	auto dist_cmp = [&](const kd::Cell &a, const kd::Cell &b, const kd::Cell &goal) -> bool {
-		return dist(a, goal) < dist(b, goal);
-	};
 
 	std::priority_queue<kd::Cell, std::vector<kd::Cell>, decltype(cell_cmp)> q(cell_cmp);
 	std::map<kd::Cell, kd::pair<kd::Cell, Action>> parent;
