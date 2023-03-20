@@ -1,23 +1,25 @@
 #include "grid.hh"
 #include "fmt/ostream.h"
 
-void operator+=(Cell &lhs, const Cell &rhs) {
+void kd::operator+=(kd::Cell &lhs, const kd::Cell &rhs) {
 	lhs.fst += rhs.fst;
 	lhs.sec += rhs.sec;
 }
 
-Cell operator+(const Cell &lhs, const Cell &rhs) {
-	Cell res = Cell{lhs.fst, lhs.sec};
+kd::Cell kd::operator+(const kd::Cell &lhs, const kd::Cell &rhs) {
+	kd::Cell res = kd::Cell{lhs.fst, lhs.sec};
 	res += rhs;
 	return res;
 }
 
-inline void Grid::insert_block(const Cell &p) { m_grid[p.fst * p.sec + p.sec] = BlockState::BLOCK; }
-inline void Grid::insert_block(const int &x, const int &y) {
+inline void kd::Grid::insert_block(const Cell &p) {
+	m_grid[p.fst * p.sec + p.sec] = BlockState::BLOCK;
+}
+inline void kd::Grid::insert_block(const int &x, const int &y) {
 	m_grid[x * width() + y] = BlockState::BLOCK;
 }
 
-void Grid::insert_block_area(const Cell &p, const int &w, const int &h) {
+void kd::Grid::insert_block_area(const Cell &p, const int &w, const int &h) {
 	// TODO: may use flood fill to make the process of inserting faster
 	// May not actually faster since have to recreate pair
 	for (int i{}; i < h; ++i)
@@ -25,7 +27,7 @@ void Grid::insert_block_area(const Cell &p, const int &w, const int &h) {
 			insert_block(p.fst + i, p.sec + j);
 }
 
-void Grid::insert_block_area(const int &x, const int &y, const int &w, const int &h) {
+void kd::Grid::insert_block_area(const int &x, const int &y, const int &w, const int &h) {
 	// TODO: may use flood fill to make the process of inserting faster
 	// May not actually faster since have to recreate pair
 	for (int i{}; i < h; ++i)
@@ -33,10 +35,10 @@ void Grid::insert_block_area(const int &x, const int &y, const int &w, const int
 			insert_block(x + i, y + j);
 }
 
-void Grid::insert_goal(const Cell &p) { m_goals.push_back(p); }
+void kd::Grid::insert_goal(const Cell &p) { m_goals.push_back(p); }
 
-void Grid::insert_goal(const int &x, const int &y) { m_goals.emplace_back(Cell{x, y}); }
+void kd::Grid::insert_goal(const int &x, const int &y) { m_goals.emplace_back(Cell{x, y}); }
 
-inline int &Grid::at(const Cell &p) { return m_grid[p.fst * width() + p.sec]; }
-int &Grid::at(const int &x, const int &y) { return m_grid[x * width() + y]; }
-int &Grid::operator[](const Cell &p) { return at(p); }
+inline int &kd::Grid::at(const Cell &p) { return m_grid[p.fst * width() + p.sec]; }
+int &kd::Grid::at(const int &x, const int &y) { return m_grid[x * width() + y]; }
+int &kd::Grid::operator[](const Cell &p) { return at(p); }

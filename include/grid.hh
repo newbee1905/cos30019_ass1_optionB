@@ -10,6 +10,7 @@
 #include "e_block.hh"
 #include "utils.hh"
 
+namespace kd {
 typedef kd::pair<int, int> Cell;
 
 void operator+=(Cell &lhs, const Cell &rhs);
@@ -54,5 +55,6 @@ public:
 		m_grid.shrink_to_fit();
 	}
 };
+}; // namespace kd
 
 #endif // !GRID_HH

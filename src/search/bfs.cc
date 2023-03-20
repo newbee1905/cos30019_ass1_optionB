@@ -9,12 +9,12 @@
 #include <queue>
 #include <vector>
 
-void Agent::bfs(Grid &grid, std::vector<Action> &res) {
-	std::queue<Cell> q;
-	std::map<Cell, kd::pair<Cell, Action>> parent;
+void Agent::bfs(kd::Grid &grid, std::vector<Action> &res) {
+	std::queue<kd::Cell> q;
+	std::map<kd::Cell, kd::pair<kd::Cell, Action>> parent;
 
-	parent[this->m_pos] = kd::pair<Cell, Action>{
-			Cell{-1, -1},
+	parent[this->m_pos] = kd::pair<kd::Cell, Action>{
+			kd::Cell{-1, -1},
       Action::NO_OP
   };
 	q.push(this->m_pos);
@@ -22,14 +22,14 @@ void Agent::bfs(Grid &grid, std::vector<Action> &res) {
 
 	// TODO: just use the first goal for now
 	const auto goal = grid.m_goals[0];
-	Cell cur;
+	kd::Cell cur;
 	for (cur = q.front(); !q.empty(); cur = q.front()) {
 		q.pop();
 
 		if (cur == goal)
 			break;
 
-		for (const auto &c : CellAdjs) {
+		for (const auto &c : kd::CellAdjs) {
 			const auto ncell = cur + c.fst;
 			if (ncell.fst < 0 || ncell.sec < 0 || ncell.fst >= grid.height() || ncell.sec >= grid.width())
 				continue;
@@ -37,7 +37,7 @@ void Agent::bfs(Grid &grid, std::vector<Action> &res) {
 				continue;
 			grid[ncell] = BlockState::VISIT;
 			q.push(ncell);
-			parent[ncell] = kd::pair<Cell, Action>{cur, c.sec};
+			parent[ncell] = kd::pair<kd::Cell, Action>{cur, c.sec};
 		}
 	}
 

@@ -9,6 +9,7 @@
 #include <array>
 #include <vector>
 
+namespace kd {
 class Agent {
 private:
 	kd::pair<int, int> m_pos;
@@ -17,16 +18,17 @@ public:
 	Agent() {}
 	~Agent() {}
 
-	void dfs(Grid &grid, std::vector<Action> &res);
-	void bfs(Grid &grid, std::vector<Action> &res);
-	void gbfs(Grid &grid, std::vector<Action> &res);
-	void astar(Grid &grid, std::vector<Action> &res);
+	void dfs(kd::Grid &grid, std::vector<Action> &res);
+	void bfs(kd::Grid &grid, std::vector<Action> &res);
+	void gbfs(kd::Grid &grid, std::vector<Action> &res);
+	void astar(kd::Grid &grid, std::vector<Action> &res);
 
-	const Cell &pos() { return m_pos; }
-	void set_pos(const Cell &pos) { m_pos = pos; }
-	void set_pos(const Cell &&pos) { m_pos = std::move(pos); }
+	const kd::Cell &pos() { return m_pos; }
+	void set_pos(const kd::Cell &pos) { m_pos = pos; }
+	void set_pos(const kd::Cell &&pos) { m_pos = std::move(pos); }
 
-	void search(Methods method, Grid &grid, std::vector<Action> &res);
+	void search(Methods method, kd::Grid &grid, std::vector<Action> &res);
 };
+}; // namespace kd
 
 #endif // !AGENT_HH

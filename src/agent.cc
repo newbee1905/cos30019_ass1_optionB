@@ -1,6 +1,6 @@
 #include "agent.hh"
 
-void Agent::search(Methods method, Grid &grid, std::vector<Action> &res) {
+void kd::Agent::search(Methods method, Grid &grid, std::vector<Action> &res) {
 	switch (method) {
 	case Methods::DFS:
 		return dfs(grid, res);

@@ -10,17 +10,17 @@
 #include <queue>
 #include <vector>
 
-void Agent::astar(Grid &grid, std::vector<Action> &res) {
-	auto cell_cmp = [&](const Cell &a, const Cell &b) { return grid[a] > grid[b]; };
-	auto dist     = [&](const Cell &a, const Cell &b) {
+void Agent::astar(kd::Grid &grid, std::vector<Action> &res) {
+	auto cell_cmp = [&](const kd::Cell &a, const kd::Cell &b) { return grid[a] > grid[b]; };
+	auto dist     = [&](const kd::Cell &a, const kd::Cell &b) {
     return std::abs(a.fst - b.fst) + std::abs(a.sec - b.sec);
 	};
 
-	std::priority_queue<Cell, std::vector<Cell>, decltype(cell_cmp)> q(cell_cmp);
-	std::map<Cell, kd::pair<Cell, Action>> parent;
+	std::priority_queue<kd::Cell, std::vector<kd::Cell>, decltype(cell_cmp)> q(cell_cmp);
+	std::map<kd::Cell, kd::pair<kd::Cell, Action>> parent;
 
-	parent[this->m_pos] = kd::pair<Cell, Action>{
-			Cell{-1, -1},
+	parent[this->m_pos] = kd::pair<kd::Cell, Action>{
+			kd::Cell{-1, -1},
       Action::NO_OP
   };
 	q.push(this->m_pos);
@@ -28,14 +28,14 @@ void Agent::astar(Grid &grid, std::vector<Action> &res) {
 
 	// TODO: just use the first goal for now
 	const auto goal = grid.m_goals[0];
-	Cell cur;
+	kd::Cell cur;
 	for (cur = q.top(); !q.empty(); cur = q.top()) {
 		q.pop();
 
 		if (cur == goal)
 			break;
 
-		for (const auto &c : CellAdjs) {
+		for (const auto &c : kd::CellAdjs) {
 			const auto ncell = cur + c.fst;
 			if (ncell.fst < 0 || ncell.sec < 0 || ncell.fst >= grid.height() || ncell.sec >= grid.width())
 				continue;
@@ -44,7 +44,7 @@ void Agent::astar(Grid &grid, std::vector<Action> &res) {
 				continue;
 			grid[ncell] = grid[cur] + 1 + dist(ncell, goal);
 			q.push(ncell);
-			parent[ncell] = kd::pair<Cell, Action>{cur, c.sec};
+			parent[ncell] = kd::pair<kd::Cell, Action>{cur, c.sec};
 		}
 	}
 
