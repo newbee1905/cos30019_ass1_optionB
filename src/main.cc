@@ -79,7 +79,9 @@ signed main(int argc, char **argv) {
 
 	a.search(GetEnumMethods(method), grid, res);
 
+	// Print the route
 	if (res.empty()) {
+		fmt::print(stderr, "No solution found.");
 		return 1;
 	}
 
@@ -90,7 +92,6 @@ signed main(int argc, char **argv) {
 	}
 	fmt::println("");
 
-	// Print the route
 	for (std::size_t i = res.size(); i-- > 0; fmt::print("{}; ", res[i]))
 		;
 }

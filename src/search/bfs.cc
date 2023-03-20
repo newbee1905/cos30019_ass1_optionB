@@ -22,7 +22,8 @@ void Agent::bfs(Grid &grid, std::vector<Action> &res) {
 
 	// TODO: just use the first goal for now
 	const auto goal = grid.m_goals[0];
-	for (auto cur = q.front(); !q.empty(); cur = q.front()) {
+	Cell cur;
+	for (cur = q.front(); !q.empty(); cur = q.front()) {
 		q.pop();
 
 		if (cur == goal)
@@ -40,7 +41,8 @@ void Agent::bfs(Grid &grid, std::vector<Action> &res) {
 		}
 	}
 
-	auto cur = goal;
+	if (cur != goal)
+		return;
 	// Trace back the route
 	for (; cur != this->m_pos; res.emplace_back(parent[cur].sec), cur = parent[cur].fst)
 		;
