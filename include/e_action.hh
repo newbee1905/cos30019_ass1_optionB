@@ -21,9 +21,16 @@ constexpr std::array<kd::Cell, 5> CellFromDirection = {
     kd::Cell{ 0,  0},
 };
 
+// constexpr std::array<kd::pair<kd::Cell, Action>, 4> CellAdjs = {
+// 		kd::pair<kd::Cell, Action>{kd::Cell{0, -1},  Action::LEFT},
+// 		kd::pair<kd::Cell, Action>{kd::Cell{-1, 0},    Action::UP},
+// 		kd::pair<kd::Cell, Action>{ kd::Cell{1, 0},  Action::DOWN},
+// 		kd::pair<kd::Cell, Action>{ kd::Cell{0, 1}, Action::RIGHT},
+// };
+
 constexpr std::array<kd::pair<kd::Cell, Action>, 4> CellAdjs = {
-		kd::pair<kd::Cell, Action>{kd::Cell{0, -1},  Action::LEFT},
 		kd::pair<kd::Cell, Action>{kd::Cell{-1, 0},    Action::UP},
+		kd::pair<kd::Cell, Action>{kd::Cell{0, -1},  Action::LEFT},
 		kd::pair<kd::Cell, Action>{ kd::Cell{1, 0},  Action::DOWN},
 		kd::pair<kd::Cell, Action>{ kd::Cell{0, 1}, Action::RIGHT},
 };

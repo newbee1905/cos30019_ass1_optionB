@@ -28,7 +28,7 @@ void kd::Agent::gbfs(kd::Grid &grid, std::vector<Action> &res) {
 	// TODO: just use the first goal for now
 	const auto goal = grid.m_goals[0];
 	kd::Cell cur;
-	for (cur = q.top(); !q.empty(); cur = q.top()) {
+	for (cur = q.top(); !q.empty(); cur = q.top(), ++this->m_nnodes) {
 		q.pop();
 
 		if (cur == goal)

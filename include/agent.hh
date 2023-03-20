@@ -13,6 +13,9 @@ namespace kd {
 class Agent {
 private:
 	kd::pair<int, int> m_pos;
+	// number of nodes checked
+	// while searching
+	int m_nnodes = 1;
 
 public:
 	Agent() {}
@@ -22,6 +25,8 @@ public:
 	void bfs(kd::Grid &grid, std::vector<Action> &res);
 	void gbfs(kd::Grid &grid, std::vector<Action> &res);
 	void astar(kd::Grid &grid, std::vector<Action> &res);
+
+	const int &nnodes() { return m_nnodes; }
 
 	const kd::Cell &pos() { return m_pos; }
 	void set_pos(const kd::Cell &pos) { m_pos = pos; }

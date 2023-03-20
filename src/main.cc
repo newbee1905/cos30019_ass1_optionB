@@ -92,6 +92,7 @@ signed main(int argc, char **argv) {
 	}
 	fmt::println("");
 
+	fmt::println("{} {} {}", inp_file_name, method, a.nnodes());
 	for (std::size_t i = res.size(); i-- > 0; fmt::print("{}; ", res[i]))
 		;
 }

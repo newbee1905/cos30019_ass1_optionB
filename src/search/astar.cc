@@ -33,7 +33,7 @@ void kd::Agent::astar(kd::Grid &grid, std::vector<Action> &res) {
 	grid[this->m_pos] = dist(this->m_pos, goal);
 
 	kd::Cell cur;
-	for (cur = q.top(); !q.empty(); cur = q.top()) {
+	for (cur = q.top(); !q.empty(); cur = q.top(), ++this->m_nnodes) {
 		q.pop();
 
 		if (cur == goal)
@@ -46,7 +46,7 @@ void kd::Agent::astar(kd::Grid &grid, std::vector<Action> &res) {
 			// BLOCK or VISITED
 			if (grid[ncell] >= BlockState::BLOCK)
 				continue;
-			grid[ncell] = grid[cur] + dist_cmp(cur, ncell, goal) + 1;
+			grid[ncell] = grid[cur] + dist(ncell, goal) - dist(cur, goal) + 1;
 			q.push(ncell);
 			parent[ncell] = kd::pair<kd::Cell, Action>{cur, c.sec};
 		}

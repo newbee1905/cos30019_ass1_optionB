@@ -23,7 +23,7 @@ void kd::Agent::dfs(kd::Grid &grid, std::vector<Action> &res) {
 	// TODO: just use the first goal for now
 	const auto goal = grid.m_goals[0];
 	kd::Cell cur;
-	for (cur = s.top(); !s.empty(); cur = s.top()) {
+	for (cur = s.top(); !s.empty(); cur = s.top(), ++this->m_nnodes) {
 		s.pop();
 
 		if (cur == goal)
