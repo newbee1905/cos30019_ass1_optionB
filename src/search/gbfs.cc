@@ -22,7 +22,7 @@ void Agent::gbfs(Grid &grid, std::vector<Action> &res) {
 	q.push(this->m_pos);
 	grid[this->m_pos] = BlockState::VISIT;
 
-	// TODO: just use the first goal for DFS
+	// TODO: just use the first goal for now
 	const auto goal = grid.m_goals[0];
 	for (auto cur = q.top(); !q.empty(); cur = q.top()) {
 		q.pop();

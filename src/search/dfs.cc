@@ -20,7 +20,7 @@ void Agent::dfs(Grid &grid, std::vector<Action> &res) {
 	s.push(this->m_pos);
 	grid[this->m_pos] = BlockState::VISIT;
 
-	// TODO: just use the first goal for DFS
+	// TODO: just use the first goal for now
 	const auto goal = grid.m_goals[0];
 	for (auto cur = s.top(); !s.empty(); cur = s.top()) {
 		s.pop();
