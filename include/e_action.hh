@@ -21,12 +21,15 @@ constexpr std::array<kd::Cell, 5> CellFromDirection = {
     kd::Cell{ 0,  0},
 };
 
-// constexpr std::array<kd::pair<kd::Cell, Action>, 4> CellAdjs = {
-// 		kd::pair<kd::Cell, Action>{kd::Cell{0, -1},  Action::LEFT},
-// 		kd::pair<kd::Cell, Action>{kd::Cell{-1, 0},    Action::UP},
-// 		kd::pair<kd::Cell, Action>{ kd::Cell{1, 0},  Action::DOWN},
-// 		kd::pair<kd::Cell, Action>{ kd::Cell{0, 1}, Action::RIGHT},
-// };
+// DFS use stack
+// so reverse the order of directions we need to push
+// into the stack
+constexpr std::array<kd::pair<kd::Cell, Action>, 4> DfsCellAdjs = {
+		kd::pair<kd::Cell, Action>{ kd::Cell{0, 1}, Action::RIGHT},
+		kd::pair<kd::Cell, Action>{ kd::Cell{1, 0},  Action::DOWN},
+		kd::pair<kd::Cell, Action>{kd::Cell{0, -1},  Action::LEFT},
+		kd::pair<kd::Cell, Action>{kd::Cell{-1, 0},    Action::UP},
+};
 
 constexpr std::array<kd::pair<kd::Cell, Action>, 4> CellAdjs = {
 		kd::pair<kd::Cell, Action>{kd::Cell{-1, 0},    Action::UP},
@@ -34,6 +37,7 @@ constexpr std::array<kd::pair<kd::Cell, Action>, 4> CellAdjs = {
 		kd::pair<kd::Cell, Action>{ kd::Cell{1, 0},  Action::DOWN},
 		kd::pair<kd::Cell, Action>{ kd::Cell{0, 1}, Action::RIGHT},
 };
+
 }; // namespace kd
 
 #endif // !ENUM_ACTION_HH

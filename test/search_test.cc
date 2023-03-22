@@ -75,3 +75,9 @@ TEST_CASE("ASTAR") {
 	a.search(Methods::AS, grid, res);
 	SEARCH_TEST_CONFIRM();
 }
+
+TEST_CASE("DIJKSTRA") {
+	SEARCH_TEST_INIT();
+	a.search(Methods::CUS1, grid, res);
+	SEARCH_TEST_CONFIRM();
+}

@@ -25,12 +25,13 @@ public:
 	void bfs(kd::Grid &grid, std::vector<Action> &res);
 	void gbfs(kd::Grid &grid, std::vector<Action> &res);
 	void astar(kd::Grid &grid, std::vector<Action> &res);
+	void dijkstra(kd::Grid &grid, std::vector<Action> &res);
 
-	const int &nnodes() { return m_nnodes; }
+	const int &nnodes();
 
-	const kd::Cell &pos() { return m_pos; }
-	void set_pos(const kd::Cell &pos) { m_pos = pos; }
-	void set_pos(const kd::Cell &&pos) { m_pos = std::move(pos); }
+	const kd::Cell &pos();
+	void set_pos(const kd::Cell &pos);
+	void set_pos(const kd::Cell &&pos);
 
 	void search(Methods method, kd::Grid &grid, std::vector<Action> &res);
 };
