@@ -34,8 +34,11 @@ void kd::Agent::dijkstra(kd::Grid &grid, std::vector<Action> &res) {
 			const auto ncell = cur + c.fst;
 			if (ncell.fst < 0 || ncell.sec < 0 || ncell.fst >= grid.height() || ncell.sec >= grid.width())
 				continue;
-			if (grid[ncell] == BlockState::BLOCK ||
-			    (grid[ncell] >= BlockState::VISIT && grid[ncell] < grid[cur] + 1))
+			/* if (grid[ncell] == BlockState::BLOCK || */
+			/*     (grid[ncell] >= BlockState::VISIT && grid[ncell] < grid[cur] + 1)) */
+			/* 	continue; */
+
+			if (grid[ncell] >= BlockState::BLOCK)
 				continue;
 			grid[ncell] = grid[cur] + 1;
 			q.push(ncell);
