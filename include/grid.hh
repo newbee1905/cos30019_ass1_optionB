@@ -33,6 +33,12 @@ public:
 		std::fill(m_grid.begin(), m_grid.end(), BlockState::EMPTY);
 	}
 
+	~Grid() {
+		// free vector
+		m_grid.clear();
+		m_grid.shrink_to_fit();
+	}
+
 	inline int height() const { return m_height; }
 	inline int width() const { return m_width; }
 
@@ -49,10 +55,12 @@ public:
 	int &at(const int &x, const int &y);
 	int &operator[](const kd::pair<int, int> &p);
 
-	~Grid() {
-		// free vector
-		m_grid.clear();
-		m_grid.shrink_to_fit();
+	std::function<bool(const Cell &, const Cell &)> cell_cmp = [this](const kd::Cell &a,
+	                                                                  const kd::Cell &b) -> bool {
+		return this->at(a.fst, a.sec) > this->at(b.fst, b.sec);
+	};
+	static int dist(const kd::Cell &a, const kd::Cell &b) {
+		return std::abs(a.fst - b.fst) + std::abs(a.sec - b.sec);
 	}
 };
 }; // namespace kd

@@ -10,8 +10,7 @@
 #include <vector>
 
 void kd::Agent::dijkstra(kd::Grid &grid, std::vector<Action> &res) {
-	auto cell_cmp = [&](const kd::Cell &a, const kd::Cell &b) -> bool { return grid[a] > grid[b]; };
-	std::priority_queue<kd::Cell, std::vector<kd::Cell>, decltype(cell_cmp)> q(cell_cmp);
+	std::priority_queue<kd::Cell, std::vector<kd::Cell>, decltype(grid.cell_cmp)> q(grid.cell_cmp);
 
 	std::map<kd::Cell, kd::pair<kd::Cell, Action>> parent;
 

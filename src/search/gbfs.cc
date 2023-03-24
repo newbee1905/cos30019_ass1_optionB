@@ -10,12 +10,7 @@
 #include <vector>
 
 void kd::Agent::gbfs(kd::Grid &grid, std::vector<Action> &res) {
-	auto cell_cmp = [&](const kd::Cell &a, const kd::Cell &b) { return grid[a] > grid[b]; };
-	auto dist     = [&](const kd::Cell &a, const kd::Cell &b) {
-    return std::abs(a.fst - b.fst) + std::abs(a.sec - b.sec);
-	};
-
-	std::priority_queue<kd::Cell, std::vector<kd::Cell>, decltype(cell_cmp)> q(cell_cmp);
+	std::priority_queue<kd::Cell, std::vector<kd::Cell>, decltype(grid.cell_cmp)> q(grid.cell_cmp);
 	std::map<kd::Cell, kd::pair<kd::Cell, Action>> parent;
 
 	parent[this->m_pos] = kd::pair<kd::Cell, Action>{
@@ -41,7 +36,7 @@ void kd::Agent::gbfs(kd::Grid &grid, std::vector<Action> &res) {
 			// BLOCK or VISITED
 			if (grid[ncell] >= BlockState::BLOCK)
 				continue;
-			grid[ncell] = dist(ncell, goal) + BlockState::VISIT;
+			grid[ncell] = grid.dist(ncell, goal) + BlockState::VISIT;
 			q.push(ncell);
 			parent[ncell] = kd::pair<kd::Cell, Action>{cur, c.sec};
 		}
