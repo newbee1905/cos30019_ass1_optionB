@@ -59,6 +59,11 @@ public:
 	                                                                  const kd::Cell &b) -> bool {
 		return this->at(a.fst, a.sec) > this->at(b.fst, b.sec);
 	};
+
+	std::function<bool(const Cell &)> cell_valid = [this](const kd::Cell &a) -> bool {
+		return a.fst >= 0 && a.sec >= 0 && a.fst < m_height && a.sec < m_width;
+	};
+
 	static int dist(const kd::Cell &a, const kd::Cell &b) {
 		return std::abs(a.fst - b.fst) + std::abs(a.sec - b.sec);
 	}

@@ -31,7 +31,7 @@ void kd::Agent::dfs(kd::Grid &grid, std::vector<Action> &res) {
 
 		for (const auto &c : kd::DfsCellAdjs) {
 			const auto ncell = cur + c.fst;
-			if (ncell.fst < 0 || ncell.sec < 0 || ncell.fst >= grid.height() || ncell.sec >= grid.width())
+			if (!grid.cell_valid(ncell))
 				continue;
 			if (grid[ncell] >= BlockState::BLOCK)
 				continue;

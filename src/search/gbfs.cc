@@ -31,9 +31,8 @@ void kd::Agent::gbfs(kd::Grid &grid, std::vector<Action> &res) {
 
 		for (const auto &c : kd::CellAdjs) {
 			const auto ncell = cur + c.fst;
-			if (ncell.fst < 0 || ncell.sec < 0 || ncell.fst >= grid.height() || ncell.sec >= grid.width())
+			if (!grid.cell_valid(ncell))
 				continue;
-			// BLOCK or VISITED
 			if (grid[ncell] >= BlockState::BLOCK)
 				continue;
 			grid[ncell] = grid.dist(ncell, goal) + BlockState::VISIT;

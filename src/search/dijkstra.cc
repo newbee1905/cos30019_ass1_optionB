@@ -32,7 +32,7 @@ void kd::Agent::dijkstra(kd::Grid &grid, std::vector<Action> &res) {
 
 		for (const auto &c : kd::CellAdjs) {
 			const auto ncell = cur + c.fst;
-			if (ncell.fst < 0 || ncell.sec < 0 || ncell.fst >= grid.height() || ncell.sec >= grid.width())
+			if (!grid.cell_valid(ncell))
 				continue;
 			// odd number is either block or visited
 			if (grid[ncell] & 1)
