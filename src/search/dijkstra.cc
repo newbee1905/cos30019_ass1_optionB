@@ -34,16 +34,19 @@ void kd::Agent::dijkstra(kd::Grid &grid, std::vector<Action> &res) {
 			const auto ncell = cur + c.fst;
 			if (ncell.fst < 0 || ncell.sec < 0 || ncell.fst >= grid.height() || ncell.sec >= grid.width())
 				continue;
-			/* if (grid[ncell] == BlockState::BLOCK || */
-			/*     (grid[ncell] >= BlockState::VISIT && grid[ncell] < grid[cur] + 1)) */
-			/* 	continue; */
-
-			if (grid[ncell] >= BlockState::BLOCK)
+			// odd number is either block or visited
+			if (grid[ncell] & 1)
 				continue;
-			grid[ncell] = grid[cur] + 1;
+			// if not empty and already smaller
+			if (grid[ncell] != BlockState::EMPTY && grid[ncell] <= grid[cur] + 2)
+				continue;
+			grid[ncell] = grid[cur] + 2;
 			q.push(ncell);
 			parent[ncell] = kd::pair<kd::Cell, Action>{cur, c.sec};
 		}
+
+		// set visited
+		++grid[cur];
 	}
 
 	if (grid[goal] == BlockState::EMPTY)
