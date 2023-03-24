@@ -25,6 +25,10 @@
 #define CHAR(tmp) (char *)&tmp, 1
 #endif
 
+#if defined(__WIN32__)
+signed wmain(int argc, char **argv) { main(argc, argv); }
+#endif
+
 signed main(int argc, char **argv) {
 	if (argc < 3) {
 		fmt::print(stderr, "Not enough arguments. "
