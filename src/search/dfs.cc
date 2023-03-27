@@ -26,6 +26,8 @@ void kd::Agent::dfs(kd::Grid &grid, std::vector<Action> &res) {
 	for (cur = s.top(); !s.empty(); cur = s.top(), ++this->m_nnodes) {
 		s.pop();
 
+		grid[cur] = BlockState::VISIT;
+
 		if (cur == goal)
 			break;
 
@@ -35,7 +37,7 @@ void kd::Agent::dfs(kd::Grid &grid, std::vector<Action> &res) {
 				continue;
 			if (grid[ncell] >= BlockState::BLOCK)
 				continue;
-			grid[ncell] = BlockState::VISIT;
+			/* grid[ncell] = BlockState::VISIT; */
 			s.push(ncell);
 			parent[ncell] = kd::pair<kd::Cell, Action>{cur, c.sec};
 		}
