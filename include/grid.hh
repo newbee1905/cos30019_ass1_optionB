@@ -55,6 +55,8 @@ public:
 	int &at(const int &x, const int &y);
 	int &operator[](const kd::pair<int, int> &p);
 
+	void print();
+
 	std::function<bool(const Cell &, const Cell &)> cell_cmp = [this](const kd::Cell &a,
 	                                                                  const kd::Cell &b) -> bool {
 		return this->at(a.fst, a.sec) > this->at(b.fst, b.sec);

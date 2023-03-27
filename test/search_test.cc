@@ -25,10 +25,10 @@ constexpr std::array<std::tuple<kd::Cell, int, int>, 7> blocks = {
 		std::tuple<kd::Cell, int, int>{ kd::Cell{4, 8}, 2, 1},
 };
 
-#define SEARCH_TEST_INIT()                                                                         \
+// TODO: add argument STATE to check for no solution maze
+#define SEARCH_TEST_INIT(METHOD)                                                                   \
 	kd::Grid grid(height, width);                                                                    \
-	kd::Agent a;                                                                                     \
-	a.set_pos(start);                                                                                \
+	kd::Agent a(start, METHOD);                                                                      \
 	CHECK(a.pos() == start);                                                                         \
                                                                                                    \
 	for (const auto &g : goals)                                                                      \
@@ -37,13 +37,13 @@ constexpr std::array<std::tuple<kd::Cell, int, int>, 7> blocks = {
 	for (const auto &b : blocks)                                                                     \
 		grid.insert_block_area(std::get<0>(b), std::get<1>(b), std::get<2>(b));                        \
                                                                                                    \
-	std::vector<Action> res
+	CHECK(a.search(grid) == 0)
 
 #define SEARCH_TEST_CONFIRM()                                                                      \
 	kd::Cell s = a.pos();                                                                            \
 	CHECK(s == start);                                                                               \
-	for (std::size_t i = res.size(); i-- > 0;) {                                                     \
-		auto action = res[i];                                                                          \
+	for (std::size_t i = a.path().size(); i-- > 0;) {                                                \
+		auto action = a.path()[i];                                                                     \
 		s += kd::CellFromDirection[action];                                                            \
 		if (grid[s] == BlockState::EMPTY)                                                              \
 			FAIL(fmt::format("The cell should not be empty after searched: ({}, {})", s.fst, s.sec));    \
@@ -53,31 +53,26 @@ constexpr std::array<std::tuple<kd::Cell, int, int>, 7> blocks = {
 	CHECK(check != goals.end())
 
 TEST_CASE("DFS") {
-	SEARCH_TEST_INIT();
-	a.search(Methods::DFS, grid, res);
+	SEARCH_TEST_INIT("DFS");
 	SEARCH_TEST_CONFIRM();
 }
 
 TEST_CASE("BFS") {
-	SEARCH_TEST_INIT();
-	a.search(Methods::BFS, grid, res);
+	SEARCH_TEST_INIT("BFS");
 	SEARCH_TEST_CONFIRM();
 }
 
 TEST_CASE("GBFS") {
-	SEARCH_TEST_INIT();
-	a.search(Methods::GBFS, grid, res);
+	SEARCH_TEST_INIT("GBFS");
 	SEARCH_TEST_CONFIRM();
 }
 
 TEST_CASE("ASTAR") {
-	SEARCH_TEST_INIT();
-	a.search(Methods::AS, grid, res);
+	SEARCH_TEST_INIT("AS");
 	SEARCH_TEST_CONFIRM();
 }
 
 TEST_CASE("DIJKSTRA") {
-	SEARCH_TEST_INIT();
-	a.search(Methods::CUS1, grid, res);
+	SEARCH_TEST_INIT("CUS1");
 	SEARCH_TEST_CONFIRM();
 }

@@ -7,6 +7,8 @@
 #include "grid.hh"
 #include "utils.hh"
 #include <array>
+#include <exception>
+#include <stdexcept>
 #include <vector>
 
 namespace kd {
@@ -16,24 +18,42 @@ private:
 	// number of nodes checked
 	// while searching
 	int m_nnodes = 1;
+	std::vector<Action> m_path;
+	Methods m_method;
 
 public:
-	Agent() {}
+	Agent(const kd::Cell &pos, const std::string_view m) : m_pos(pos) {
+		try {
+			m_method = GetEnumMethods(m);
+		} catch (const std::range_error &e) {
+			throw std::runtime_error("This method is not implemented yet or not existed");
+		}
+	}
+	Agent(const kd::Cell &&pos, const std::string_view m) : m_pos(std::move(pos)) {
+		try {
+			m_method = GetEnumMethods(m);
+		} catch (const std::range_error &e) {
+			throw std::runtime_error("This method is not implemented yet or not existed");
+		}
+	}
 	~Agent() {}
 
-	void dfs(kd::Grid &grid, std::vector<Action> &res);
-	void bfs(kd::Grid &grid, std::vector<Action> &res);
-	void gbfs(kd::Grid &grid, std::vector<Action> &res);
-	void astar(kd::Grid &grid, std::vector<Action> &res);
-	void dijkstra(kd::Grid &grid, std::vector<Action> &res);
+	int dfs(kd::Grid &grid);
+	int bfs(kd::Grid &grid);
+	int gbfs(kd::Grid &grid);
+	int astar(kd::Grid &grid);
+	int dijkstra(kd::Grid &grid);
 
 	const int &nnodes();
+
+	const std::vector<Action> &path() const;
 
 	const kd::Cell &pos();
 	void set_pos(const kd::Cell &pos);
 	void set_pos(const kd::Cell &&pos);
 
-	void search(Methods method, kd::Grid &grid, std::vector<Action> &res);
+	[[nodiscard]] int search(kd::Grid &grid);
+	void print_path();
 };
 }; // namespace kd
 

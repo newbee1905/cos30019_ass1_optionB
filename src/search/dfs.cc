@@ -9,7 +9,7 @@
 #include <stack>
 #include <vector>
 
-void kd::Agent::dfs(kd::Grid &grid, std::vector<Action> &res) {
+int kd::Agent::dfs(kd::Grid &grid) {
 	std::stack<kd::Cell> s;
 	std::map<kd::Cell, kd::pair<kd::Cell, Action>> parent;
 
@@ -44,8 +44,9 @@ void kd::Agent::dfs(kd::Grid &grid, std::vector<Action> &res) {
 	}
 
 	if (cur != goal)
-		return;
+		return 1;
 	// Trace back the route
-	for (; cur != this->m_pos; res.emplace_back(parent[cur].sec), cur = parent[cur].fst)
+	for (; cur != this->m_pos; this->m_path.emplace_back(parent[cur].sec), cur = parent[cur].fst)
 		;
+	return 0;
 }

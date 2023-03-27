@@ -9,7 +9,7 @@
 #include <queue>
 #include <vector>
 
-void kd::Agent::dijkstra(kd::Grid &grid, std::vector<Action> &res) {
+int kd::Agent::dijkstra(kd::Grid &grid) {
 	std::priority_queue<kd::Cell, std::vector<kd::Cell>, decltype(grid.cell_cmp)> q(grid.cell_cmp);
 
 	std::map<kd::Cell, kd::pair<kd::Cell, Action>> parent;
@@ -50,9 +50,10 @@ void kd::Agent::dijkstra(kd::Grid &grid, std::vector<Action> &res) {
 	}
 
 	if (grid[goal] == BlockState::EMPTY)
-		return;
+		return 1;
 	cur = goal;
 	// Trace back the route
-	for (; cur != this->m_pos; res.emplace_back(parent[cur].sec), cur = parent[cur].fst)
+	for (; cur != this->m_pos; this->m_path.emplace_back(parent[cur].sec), cur = parent[cur].fst)
 		;
+	return 0;
 }

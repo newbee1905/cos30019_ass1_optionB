@@ -40,7 +40,6 @@ signed main(int argc, char **argv) {
 	const char *inp_file_name     = argv[1];
 	const std::string_view method = argv[2];
 
-	fmt::print("You select method {}\n", GetEnumMethods(method));
 	auto inp_file = fopen(inp_file_name, "rb");
 
 	assert_line(inp_file, "Failed to open input file.");
@@ -54,10 +53,9 @@ signed main(int argc, char **argv) {
 #endif
 	kd::Grid grid(n, m);
 
-	kd::Agent a;
 	kd::Cell pos;
 	assert_line(fscanf(inp_file, "(%d,%d)\n", &pos.sec, &pos.fst), "Getting the starting point");
-	a.set_pos(pos);
+	kd::Agent a(pos, method);
 
 	// use tmp to scanf after ')'
 	// to force to stop at the line for getting
@@ -73,32 +71,15 @@ signed main(int argc, char **argv) {
 
 	fclose(inp_file);
 
-	for (int i{}; i < n; ++i) {
-		for (int j{}; j < m; ++j)
-			fmt::print("{}, ", grid.at(i, j));
-		fmt::println("");
-	}
-	fmt::println("");
+	grid.print();
 
-	std::vector<Action> res;
-
-	a.search(GetEnumMethods(method), grid, res);
-
-	// Print the route
-	if (res.empty()) {
+	if (a.search(grid) != 0) {
 		fmt::print(stderr, "No solution found.");
 		return 1;
 	}
 
-	for (int i{}; i < n; ++i) {
-		for (int j{}; j < m; ++j)
-			fmt::print("{}, ", int(grid.at(i, j)));
-		fmt::println("");
-	}
-	fmt::println("");
+	grid.print();
 
 	fmt::println("{} {} {}", inp_file_name, method, a.nnodes());
-
-	for (std::size_t i = res.size(); i-- > 0; fmt::print("{}; ", res[i]))
-		;
+	a.print_path();
 }
