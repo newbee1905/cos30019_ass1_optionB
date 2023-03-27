@@ -5,7 +5,7 @@
 #include <string>
 #include <string_view>
 
-/* #include "SDL.h" */
+#include "SDL.h"
 #include "agent.hh"
 #include "e_action.hh"
 #include "e_methods.hh"
