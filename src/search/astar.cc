@@ -35,8 +35,9 @@ void kd::Agent::astar(kd::Grid &grid, std::vector<Action> &res) {
 			const auto ncell = cur + c.fst;
 			if (!grid.cell_valid(ncell))
 				continue;
-			if (grid[ncell] == BlockState::BLOCK ||
-			    (grid[ncell] >= BlockState::VISIT && grid[ncell] < grid[cur] + 1))
+			if (grid[ncell] == BlockState::BLOCK)
+				continue;
+			if (grid[ncell] != BlockState::EMPTY && grid[ncell] <= grid[cur] + 1)
 				continue;
 			grid[ncell] = grid[cur] + grid.dist(ncell, goal) - grid.dist(cur, goal) + 1;
 			q.push(ncell);
