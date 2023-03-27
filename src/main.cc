@@ -5,6 +5,7 @@
 #include <string>
 #include <string_view>
 
+#include "SDL.h"
 #include "agent.hh"
 #include "e_action.hh"
 #include "e_methods.hh"
@@ -46,16 +47,16 @@ signed main(int argc, char **argv) {
 
 	std::size_t n, m;
 #ifdef __linux__
-	fscanf(inp_file, "[%ld, %ld]\n", &n, &m);
+	assert_line(fscanf(inp_file, "[%ld, %ld]\n", &n, &m), "Getting the grid's size");
 #elif _WIN32
 	// size_t in windows is long long int
-	fscanf(inp_file, "[%lld, %lld]\n", &n, &m);
+	assert_line(fscanf(inp_file, "[%lld, %lld]\n", &n, &m), "Getting the grid's size");
 #endif
 	kd::Grid grid(n, m);
 
 	kd::Agent a;
 	kd::Cell pos;
-	fscanf(inp_file, "(%d,%d)\n", &pos.sec, &pos.fst);
+	assert_line(fscanf(inp_file, "(%d,%d)\n", &pos.sec, &pos.fst), "Getting the starting point");
 	a.set_pos(pos);
 
 	// use tmp to scanf after ')'
@@ -97,6 +98,7 @@ signed main(int argc, char **argv) {
 	fmt::println("");
 
 	fmt::println("{} {} {}", inp_file_name, method, a.nnodes());
+
 	for (std::size_t i = res.size(); i-- > 0; fmt::print("{}; ", res[i]))
 		;
 }
