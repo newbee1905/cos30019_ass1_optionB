@@ -82,4 +82,40 @@ signed main(int argc, char **argv) {
 
 	fmt::println("{} {} {}", inp_file_name, method, a.nnodes());
 	a.print_path();
+
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
+		fmt::print(stderr, "SDL_Init Error: {}\n", SDL_GetError());
+		return 1;
+	}
+
+	SDL_Window *win =
+			SDL_CreateWindow("SDL2 Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 680, 480, 0);
+	if (!win) {
+		fmt::print(stderr, "SDL_CreateWindow Error: {}\n", SDL_GetError());
+		return 1;
+	}
+
+	SDL_Surface *sur = SDL_GetWindowSurface(win);
+	if (!sur) {
+		fmt::print(stderr, "SDL_GetWindowSurface Error: {}\n", SDL_GetError());
+		return 1;
+	}
+
+	bool quit = false;
+	for (SDL_Event e; !quit;) {
+		SDL_UpdateWindowSurface(win);
+		while (SDL_PollEvent(&e)) {
+			switch (e.type) {
+			case SDL_KEYDOWN:
+			case SDL_MOUSEBUTTONDOWN:
+			case SDL_QUIT:
+				quit = true;
+				break;
+			}
+		}
+	}
+
+	SDL_FreeSurface(sur);
+	SDL_DestroyWindow(win);
+	SDL_Quit();
 }

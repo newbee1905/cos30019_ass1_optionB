@@ -23,7 +23,7 @@ if(MSVC)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Ox /GL")
 	add_compile_options(/Zc:__cplusplus) # see https://docs.microsoft.com/en-us/cpp/build/reference/zc-cplusplus?view=msvc-160 for detail
 else()
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mavx2 -mbmi2 -Ofast -flto")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_REENTRANT -mavx2 -mbmi2 -Ofast -flto")
 endif()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -44,6 +44,8 @@ enable_testing()
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/deps/fmt)
 link_libraries(fmt::fmt-header-only)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/deps/SDL)
+link_libraries(SDL2)
 add_compile_definitions(DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/deps/doctest)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
