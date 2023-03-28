@@ -28,6 +28,8 @@
 #define FOPEN(INP_FILE, INP_FILE_NAME, MODE) fopen_s(&INP_FILE, INP_FILE_NAME, MODE)
 #endif
 
+// Source:
+// https://stackoverflow.com/questions/64625905/my-app-wont-run-unless-i-declare-main-as-wmain-why-is-that-visual-studio-19
 // not using SDL_main
 // using wmain cause errors for fopen
 // TODO: may switch back to wmain
