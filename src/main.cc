@@ -5,7 +5,7 @@
 #include <string>
 #include <string_view>
 
-/* #include "SDL.h" */
+#include "SDL.h"
 #include "agent.hh"
 #include "e_action.hh"
 #include "e_methods.hh"
@@ -20,14 +20,22 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #ifdef __linux__
-#define CHAR(tmp) (char *)&tmp
+#define CHAR(TMP)                            (char *)&TMP
+#define FOPEN(INP_FILE, INP_FILE_NAME, MODE) INP_FILE = fopen(INP_FILE_NAME, MODE)
 #elif _WIN32
-#define fscanf    fscanf_s
-#define CHAR(tmp) (char *)&tmp, 1
+#define fscanf                               fscanf_s
+#define CHAR(tmp)                            (char *)&tmp, 1
+#define FOPEN(INP_FILE, INP_FILE_NAME, MODE) fopen_s(&INP_FILE, INP_FILE_NAME, MODE)
 #endif
 
-#if defined(__WIN32__)
-signed wmain(int argc, char **argv) { main(argc, argv); }
+// not using SDL_main
+// using wmain cause errors for fopen
+// TODO: may switch back to wmain
+// if I figure out the reasons why
+// fopen is being broken
+#if defined(_WIN32)
+#undef main
+// signed wmain(int argc, char **argv) { main(argc, argv); }
 #endif
 
 signed main(int argc, char **argv) {
@@ -40,7 +48,8 @@ signed main(int argc, char **argv) {
 	const char *inp_file_name     = argv[1];
 	const std::string_view method = argv[2];
 
-	auto inp_file = fopen(inp_file_name, "rb");
+	FILE *inp_file;
+	FOPEN(inp_file, inp_file_name, "rb");
 
 	assert_line(inp_file, "Failed to open input file.");
 
@@ -83,37 +92,39 @@ signed main(int argc, char **argv) {
 	fmt::println("{} {} {}", inp_file_name, method, a.nnodes());
 	a.print_path();
 
-	// if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
-	// 	fmt::print(stderr, "SDL_Init Error: {}\n", SDL_GetError());
-	// 	return 1;
-	// }
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
+		fmt::print(stderr, "SDL_Init Error: {}\n", SDL_GetError());
+		return 1;
+	}
 
-	// SDL_Window *win =
-	// 		SDL_CreateWindow("SDL2 Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 680, 480,
-	// 0); if (!win) { 	fmt::print(stderr, "SDL_CreateWindow Error: {}\n", SDL_GetError()); 	return 1;
-	// }
+	SDL_Window *win =
+			SDL_CreateWindow("SDL2 Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 680, 480, 0);
+	if (!win) {
+		fmt::print(stderr, "SDL_CreateWindow Error: {}\n", SDL_GetError());
+		return 1;
+	}
 
-	// SDL_Surface *sur = SDL_GetWindowSurface(win);
-	// if (!sur) {
-	// 	fmt::print(stderr, "SDL_GetWindowSurface Error: {}\n", SDL_GetError());
-	// 	return 1;
-	// }
+	SDL_Surface *sur = SDL_GetWindowSurface(win);
+	if (!sur) {
+		fmt::print(stderr, "SDL_GetWindowSurface Error: {}\n", SDL_GetError());
+		return 1;
+	}
 
-	// bool quit = false;
-	// for (SDL_Event e; !quit;) {
-	// 	SDL_UpdateWindowSurface(win);
-	// 	while (SDL_PollEvent(&e)) {
-	// 		switch (e.type) {
-	// 		case SDL_KEYDOWN:
-	// 		case SDL_MOUSEBUTTONDOWN:
-	// 		case SDL_QUIT:
-	// 			quit = true;
-	// 			break;
-	// 		}
-	// 	}
-	// }
+	bool quit = false;
+	for (SDL_Event e; !quit;) {
+		SDL_UpdateWindowSurface(win);
+		while (SDL_PollEvent(&e)) {
+			switch (e.type) {
+			case SDL_KEYDOWN:
+			case SDL_MOUSEBUTTONDOWN:
+			case SDL_QUIT:
+				quit = true;
+				break;
+			}
+		}
+	}
 
-	// SDL_FreeSurface(sur);
-	// SDL_DestroyWindow(win);
-	// SDL_Quit();
+	SDL_FreeSurface(sur);
+	SDL_DestroyWindow(win);
+	SDL_Quit();
 }
