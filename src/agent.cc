@@ -1,5 +1,6 @@
 #include "agent.hh"
 #include "e_action.hh"
+#include "e_methods.hh"
 #include "fmt/ostream.h"
 
 const int &kd::Agent::nnodes() { return m_nnodes; }
@@ -22,6 +23,8 @@ int kd::Agent::search(Grid &grid) {
 		return astar(grid);
 	case Methods::CUS1:
 		return dijkstra(grid);
+	case Methods::CUS2:
+		return hill(grid);
 	default:
 		fmt::print(stderr, "This method is not implemented yet or not existed");
 		return 1;
@@ -30,8 +33,13 @@ int kd::Agent::search(Grid &grid) {
 
 void kd::Agent::print_path() {
 	switch (this->m_method) {
+	case Methods::CUS2:
+		for (std::size_t i = 0; i < this->m_path.size(); fmt::print("{}; ", this->m_path[i++]))
+			;
+		break;
 	default:
 		for (std::size_t i = this->m_path.size(); i-- > 0; fmt::print("{}; ", this->m_path[i]))
 			;
+		break;
 	}
 }

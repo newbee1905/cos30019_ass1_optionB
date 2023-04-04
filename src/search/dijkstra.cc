@@ -10,7 +10,9 @@
 #include <vector>
 
 int kd::Agent::dijkstra(kd::Grid &grid) {
-	std::priority_queue<kd::Cell, std::vector<kd::Cell>, decltype(grid.cell_cmp)> q(grid.cell_cmp);
+	/* std::priority_queue<kd::Cell, std::vector<kd::Cell>, decltype(grid.cell_cmp)> q(grid.cell_cmp);
+	 */
+	std::queue<kd::Cell> q;
 
 	std::map<kd::Cell, kd::pair<kd::Cell, Action>> parent;
 
@@ -24,7 +26,7 @@ int kd::Agent::dijkstra(kd::Grid &grid) {
 	// TODO: just use the first goal for now
 	const auto goal = grid.m_goals[0];
 	kd::Cell cur;
-	for (cur = q.top(); !q.empty(); cur = q.top(), ++this->m_nnodes) {
+	for (cur = q.front(); !q.empty(); cur = q.front(), ++this->m_nnodes) {
 		q.pop();
 
 		if (cur == goal)

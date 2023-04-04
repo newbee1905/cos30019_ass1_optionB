@@ -43,6 +43,7 @@ public:
 	int gbfs(kd::Grid &grid);
 	int astar(kd::Grid &grid);
 	int dijkstra(kd::Grid &grid);
+	int hill(kd::Grid &grid);
 
 	const int &nnodes();
 

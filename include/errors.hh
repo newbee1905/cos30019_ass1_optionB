@@ -15,6 +15,10 @@
 
 namespace kd {
 
+// TODO: fix error handling on windows
+// currently on window it is still counted
+// as unhandled exception
+
 /// Create a custom class to handle runtime error
 /// that has information about th eline of code that
 /// it is throwing from
