@@ -1,8 +1,9 @@
 #include "agent.hh"
 #include "e_action.hh"
 #include "e_block.hh"
-#include "fmt/ostream.h"
 #include "grid.hh"
+
+#include <fmt/ostream.h>
 
 #include <algorithm>
 #include <cmath>

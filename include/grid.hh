@@ -8,7 +8,7 @@
 #include <array>
 #include <vector>
 
-#include "SDL.h"
+#include <SDL.h>
 
 #include "e_block.hh"
 #include "utils.hh"

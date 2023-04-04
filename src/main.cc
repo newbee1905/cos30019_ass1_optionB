@@ -5,12 +5,13 @@
 #include <string>
 #include <string_view>
 
-#include "SDL.h"
+#include <SDL.h>
+#include <fmt/core.h>
+
 #include "agent.hh"
 #include "e_action.hh"
 #include "e_methods.hh"
 #include "errors.hh"
-#include "fmt/core.h"
 #include "grid.hh"
 #include "utils.hh"
 

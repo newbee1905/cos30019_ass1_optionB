@@ -1,6 +1,5 @@
 #include "grid.hh"
-#include "SDL.h"
-#include "fmt/ostream.h"
+#include <fmt/ostream.h>
 #include <functional>
 
 void kd::operator+=(kd::Cell &lhs, const kd::Cell &rhs) {
