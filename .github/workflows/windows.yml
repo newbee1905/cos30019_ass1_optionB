@@ -16,6 +16,10 @@ jobs:
 
     steps:
     - uses: seanmiddleditch/gha-setup-ninja@master
+
+    # setting up ninja
+    - uses: seanmiddleditch/gha-setup-ninja@master
+
     - uses: TheMrMilchmann/setup-msvc-dev@v2
       with:
         arch: x64
