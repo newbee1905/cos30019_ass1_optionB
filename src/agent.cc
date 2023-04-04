@@ -24,7 +24,7 @@ int kd::Agent::search(Grid &grid) {
 	case Methods::CUS1:
 		return dijkstra(grid);
 	case Methods::CUS2:
-		return hill(grid);
+		return idastar(grid);
 	default:
 		fmt::print(stderr, "This method is not implemented yet or not existed");
 		return 1;

@@ -6,8 +6,13 @@
 #include "fmt/ostream.h"
 #include "grid.hh"
 #include "utils.hh"
+
+#include <algorithm>
 #include <array>
 #include <exception>
+#include <map>
+#include <queue>
+#include <ranges>
 #include <stdexcept>
 #include <vector>
 
@@ -43,7 +48,7 @@ public:
 	int gbfs(kd::Grid &grid);
 	int astar(kd::Grid &grid);
 	int dijkstra(kd::Grid &grid);
-	int hill(kd::Grid &grid);
+	int idastar(kd::Grid &grid);
 
 	const int &nnodes();
 

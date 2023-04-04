@@ -1,4 +1,5 @@
 #include "grid.hh"
+#include "e_block.hh"
 #include <fmt/ostream.h>
 #include <functional>
 
@@ -17,7 +18,7 @@ inline void kd::Grid::insert_block(const Cell &p) {
 	m_grid[p.fst * p.sec + p.sec] = BlockState::BLOCK;
 }
 inline void kd::Grid::insert_block(const int &x, const int &y) {
-	m_grid[x * width() + y] = BlockState::BLOCK;
+	m_grid[x * m_width + y] = BlockState::BLOCK;
 }
 
 void kd::Grid::insert_block_area(const Cell &p, const int &w, const int &h) {
@@ -40,8 +41,8 @@ void kd::Grid::insert_goal(const Cell &p) { m_goals.push_back(p); }
 
 void kd::Grid::insert_goal(const int &x, const int &y) { m_goals.emplace_back(Cell{x, y}); }
 
-inline int &kd::Grid::at(const Cell &p) { return m_grid[p.fst * width() + p.sec]; }
-int &kd::Grid::at(const int &x, const int &y) { return m_grid[x * width() + y]; }
+inline int &kd::Grid::at(const Cell &p) { return m_grid[p.fst * m_width + p.sec]; }
+int &kd::Grid::at(const int &x, const int &y) { return m_grid[x * m_width + y]; }
 int &kd::Grid::operator[](const Cell &p) { return at(p); }
 
 void kd::Grid::print() {
@@ -51,6 +52,13 @@ void kd::Grid::print() {
 		fmt::println("");
 	}
 	fmt::println("");
+}
+
+void kd::Grid::clear() {
+	for (int i{}; i < m_height; ++i)
+		for (int j{}; j < m_width; ++j)
+			if (this->at(i, j) >= BlockState::VISIT)
+				this->at(i, j) = BlockState::EMPTY;
 }
 
 // void kd::Grid::gui_update() {

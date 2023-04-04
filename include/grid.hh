@@ -96,6 +96,7 @@ public:
 	int &operator[](const kd::pair<int, int> &p);
 
 	void print();
+	void clear();
 
 	std::function<bool(const Cell &, const Cell &)> cell_cmp = [this](const kd::Cell &a,
 	                                                                  const kd::Cell &b) -> bool {
