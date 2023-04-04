@@ -53,20 +53,20 @@ void kd::Grid::print() {
 	fmt::println("");
 }
 
-void kd::Grid::gui_update() {
-	if (!this->m_gui)
-		return;
-
-	bool quit = false;
-	for (SDL_Event *e; !quit;) {
-		/* while (SDL_PollEvent(e)) { */
-		/* 	switch (e->type) { */
-		/* 	case SDL_KEYDOWN: */
-		/* 	case SDL_MOUSEBUTTONDOWN: */
-		/* 	case SDL_QUIT: */
-		/* 		quit = true; */
-		/* 		break; */
-		/* 	} */
-		/* } */
-	}
-}
+// void kd::Grid::gui_update() {
+// 	if (!this->m_gui)
+// 		return;
+//
+// 	bool quit = false;
+// 	for (SDL_Event *e; !quit;) {
+// 		/* while (SDL_PollEvent(e)) { */
+// 		/* 	switch (e->type) { */
+// 		/* 	case SDL_KEYDOWN: */
+// 		/* 	case SDL_MOUSEBUTTONDOWN: */
+// 		/* 	case SDL_QUIT: */
+// 		/* 		quit = true; */
+// 		/* 		break; */
+// 		/* 	} */
+// 		/* } */
+// 	}
+// }
