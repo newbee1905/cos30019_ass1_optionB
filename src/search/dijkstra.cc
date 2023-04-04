@@ -26,7 +26,7 @@ int kd::Agent::dijkstra(kd::Grid &grid) {
 	// TODO: just use the first goal for now
 	const auto goal = grid.m_goals[0];
 	kd::Cell cur;
-	for (cur = q.front(); !q.empty(); cur = q.front(), ++this->m_nnodes) {
+	for (cur = q.front(); !q.empty(); cur = q.front()) {
 		q.pop();
 
 		if (cur == goal)
@@ -44,6 +44,7 @@ int kd::Agent::dijkstra(kd::Grid &grid) {
 				continue;
 			grid[ncell] = grid[cur] + 2;
 			q.push(ncell);
+			++this->m_nnodes;
 			parent[ncell] = kd::pair<kd::Cell, Action>{cur, c.sec};
 		}
 

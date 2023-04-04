@@ -23,7 +23,7 @@ int kd::Agent::gbfs(kd::Grid &grid) {
 	// TODO: just use the first goal for now
 	const auto goal = grid.m_goals[0];
 	kd::Cell cur;
-	for (cur = q.top(); !q.empty(); cur = q.top(), ++this->m_nnodes) {
+	for (cur = q.top(); !q.empty(); cur = q.top()) {
 		q.pop();
 
 		if (cur == goal)
@@ -37,6 +37,7 @@ int kd::Agent::gbfs(kd::Grid &grid) {
 				continue;
 			grid[ncell] = grid.dist(ncell, goal) + BlockState::VISIT;
 			q.push(ncell);
+			++this->m_nnodes;
 			parent[ncell] = kd::pair<kd::Cell, Action>{cur, c.sec};
 		}
 	}

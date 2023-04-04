@@ -23,7 +23,7 @@ int kd::Agent::dfs(kd::Grid &grid) {
 	// TODO: just use the first goal for now
 	const auto goal = grid.m_goals[0];
 	kd::Cell cur;
-	for (cur = s.top(); !s.empty(); cur = s.top(), ++this->m_nnodes) {
+	for (cur = s.top(); !s.empty(); cur = s.top()) {
 		s.pop();
 
 		grid[cur] = BlockState::VISIT;
@@ -39,6 +39,7 @@ int kd::Agent::dfs(kd::Grid &grid) {
 				continue;
 			/* grid[ncell] = BlockState::VISIT; */
 			s.push(ncell);
+			++this->m_nnodes;
 			parent[ncell] = kd::pair<kd::Cell, Action>{cur, c.sec};
 		}
 	}

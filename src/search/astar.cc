@@ -25,7 +25,7 @@ int kd::Agent::astar(kd::Grid &grid) {
 	grid[this->m_pos] = grid.dist(this->m_pos, goal);
 
 	kd::Cell cur;
-	for (cur = q.top(); !q.empty(); cur = q.top(), ++this->m_nnodes) {
+	for (cur = q.top(); !q.empty(); cur = q.top()) {
 		q.pop();
 
 		if (cur == goal)
@@ -41,6 +41,7 @@ int kd::Agent::astar(kd::Grid &grid) {
 				continue;
 			grid[ncell] = grid[cur] + grid.dist(ncell, goal) - grid.dist(cur, goal) + 1;
 			q.push(ncell);
+			++this->m_nnodes;
 			parent[ncell] = kd::pair<kd::Cell, Action>{cur, c.sec};
 		}
 	}
