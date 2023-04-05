@@ -14,15 +14,15 @@
 #include <vector>
 
 int kd::Agent::idastar(kd::Grid &grid) {
-	// TODO: just use the first goal for now
 	kd::Cell cur;
 	std::map<kd::Cell, kd::pair<kd::Cell, Action>> parent;
 
+	// TODO: just use the first goal for now
 	const auto goal   = grid.m_goals[0];
 	grid[this->m_pos] = BlockState::VISIT;
 
 	int threshold     = grid.dist(this->m_pos, goal);
-	int min_threshold = threshold;
+	int min_threshold = 0;
 
 	for (; cur != goal; threshold = std::max(min_threshold + 1, threshold), min_threshold = 0) {
 		std::stack<kd::Cell> s;
