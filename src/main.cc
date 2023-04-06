@@ -24,7 +24,6 @@
 #define CHAR(TMP)                            (char *)&TMP
 #define FOPEN(INP_FILE, INP_FILE_NAME, MODE) INP_FILE = fopen(INP_FILE_NAME, MODE)
 #elif _WIN32
-#define fscanf                               fscanf_s
 #define CHAR(tmp)                            (char *)&tmp, 1
 #define FOPEN(INP_FILE, INP_FILE_NAME, MODE) fopen_s(&INP_FILE, INP_FILE_NAME, MODE)
 #endif
@@ -32,13 +31,11 @@
 // Source:
 // https://stackoverflow.com/questions/64625905/my-app-wont-run-unless-i-declare-main-as-wmain-why-is-that-visual-studio-19
 // not using SDL_main
-// using wmain cause errors for fopen
-// TODO: may switch back to wmain
-// if I figure out the reasons why
-// fopen is being broken
+// using wmain cause errors for fscanf due to lack of unicode support
+// use fwscanf instead
 #if defined(_WIN32)
-#undef main
-// signed wmain(int argc, char **argv) { main(argc, argv); }
+#define fscanf fwscanf
+signed wmain(int argc, char **argv) { main(argc, argv); }
 #endif
 
 signed main(int argc, char **argv) {
