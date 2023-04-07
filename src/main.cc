@@ -38,8 +38,9 @@
 // using wmain cause errors for fscanf due to lack of unicode support
 // use fwscanf instead
 #if defined(_WIN32)
-#define fscanf fwscanf
-signed wmain(int argc, char **argv) { main(argc, argv); }
+#undef main
+// #define fscanf fwscanf
+// signed wmain(int argc, char **argv) { main(argc, argv); }
 #endif
 
 signed main(int argc, char **argv) {
