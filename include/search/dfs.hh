@@ -28,7 +28,7 @@ public:
 				kd::Cell{-1, -1},
         Action::NO_OP
     };
-		m_goal = m_grid.m_goals[0];
+		m_goal = m_grid.goals()[0];
 		m_frontier.push(m_cur);
 		m_grid[m_cur] = BlockState::VISIT;
 	}

@@ -1,28 +1,26 @@
 #include "search/idastar.hh"
 
-void kd::IDASTAR::reset() {
-	m_parent.clear();
-	m_grid.clear();
+int kd::IDASTAR::reset() {
+	std::fill(_visited.begin(), _visited.end(), 0);
 
-	m_grid[m_agent.pos()]   = BlockState::VISIT;
-	m_parent[m_agent.pos()] = kd::pair<kd::Cell, Action>{
-			kd::Cell{-1, -1},
-      Action::NO_OP
-  };
 	m_frontier.push(m_agent.pos());
+	_visited[m_agent.pos().fst * m_grid.width() + m_agent.pos().sec] = 1;
 
-	m_threshold    = std::max(_min_threshold, m_threshold);
+	if (_min_threshold <= m_threshold)
+		return 1;
+
+	m_threshold    = _min_threshold;
 	_min_threshold = 0;
+	return 0;
 }
 
 int kd::IDASTAR::step() {
 	if (m_frontier.empty()) {
 		if (m_cur != m_goal)
-			return reset(), 0;
+			return reset();
 		return 1;
 	}
-	m_cur         = m_frontier.top();
-	m_grid[m_cur] = BlockState::VISIT;
+	m_cur = m_frontier.top();
 	m_frontier.pop();
 
 	if (m_cur == m_goal)
@@ -32,30 +30,22 @@ int kd::IDASTAR::step() {
 		const auto ncell = m_cur + c.fst;
 		if (!m_grid.cell_valid(ncell))
 			continue;
-		if (m_grid[ncell] >= BlockState::BLOCK)
+		if (m_grid[ncell] == BlockState::BLOCK || _visited[ncell.fst * m_grid.width() + ncell.sec])
 			continue;
-		/* grid[ncell] = BlockState::VISIT; */
-		m_frontier.push(ncell);
-		++m_nnodes;
-		m_parent[ncell] = kd::pair<kd::Cell, Action>{m_cur, c.sec};
-	}
-
-	for (const auto &c : kd::DfsCellAdjs) {
-		const auto ncell = m_cur + c.fst;
-		if (!m_grid.cell_valid(ncell))
-			continue;
-		if (m_grid[ncell] >= BlockState::BLOCK)
-			continue;
-		const int estimate = m_grid[m_cur] + 1 + m_grid.dist(ncell, m_goal);
-		m_grid[ncell]      = m_grid[m_cur] + 1;
+		const int estimate =
+				m_grid[m_cur] + m_grid.dist(ncell, m_goal) - m_grid.dist(m_cur, m_goal) + 1;
 		if (m_threshold < estimate) {
 			if (!_min_threshold || _min_threshold > estimate)
 				_min_threshold = estimate;
 			continue;
 		}
+		if (m_grid[ncell] == BlockState::EMPTY || m_grid[ncell] > estimate) {
+			m_grid[ncell]   = estimate;
+			m_parent[ncell] = kd::pair<kd::Cell, Action>{m_cur, c.sec};
+			++m_nnodes;
+		}
+		_visited[ncell.fst * m_grid.width() + ncell.sec] = 1;
 		m_frontier.push(ncell);
-		++m_nnodes;
-		m_parent[ncell] = kd::pair<kd::Cell, Action>{m_cur, c.sec};
 	}
 	return 0;
 }

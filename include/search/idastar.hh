@@ -7,12 +7,14 @@
 #include "grid.hh"
 #include "isearch.hh"
 
+#include <algorithm>
 #include <queue>
 
 namespace kd {
 class IDASTAR : public ISearch {
 private:
 	std::map<kd::Cell, kd::pair<kd::Cell, Action>> m_parent;
+	std::vector<int> _visited;
 	std::vector<Action> m_path;
 	kd::Agent &m_agent;
 	kd::Grid &m_grid;
@@ -31,15 +33,18 @@ public:
 				kd::Cell{-1, -1},
         Action::NO_OP
     };
-		m_goal = m_grid.m_goals[0];
+		m_goal = m_grid.goals()[0];
 		m_frontier.push(m_cur);
 		m_grid[m_cur]  = m_grid.dist(m_cur, m_goal) + BlockState::VISIT;
 		m_threshold    = m_grid.dist(m_agent.pos(), m_goal);
 		_min_threshold = 0;
+		_visited.resize(m_grid.height() * m_grid.width());
+		std::fill(_visited.begin(), _visited.end(), 0);
+		_visited[m_agent.pos().fst * m_grid.width() + m_agent.pos().sec] = 1;
 	}
 
 	int step();
-	void reset();
+	int reset();
 	int run();
 	const int &nnodes();
 	const std::vector<Action> &path();

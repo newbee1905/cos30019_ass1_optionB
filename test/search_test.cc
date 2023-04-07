@@ -31,7 +31,6 @@ constexpr std::array<std::tuple<kd::Cell, int, int>, 7> blocks = {
 #define SEARCH_TEST_INIT(METHOD)                                                                   \
 	kd::Grid grid(height, width);                                                                    \
 	kd::Agent a(start);                                                                              \
-	kd::ISearch *search = kd::get_search(METHOD, a, grid);                                           \
 	CHECK(a.pos() == start);                                                                         \
                                                                                                    \
 	for (const auto &g : goals)                                                                      \
@@ -40,6 +39,7 @@ constexpr std::array<std::tuple<kd::Cell, int, int>, 7> blocks = {
 	for (const auto &b : blocks)                                                                     \
 		grid.insert_block_area(std::get<0>(b), std::get<1>(b), std::get<2>(b));                        \
                                                                                                    \
+	auto search = kd::get_search(METHOD, a, grid);                                                   \
 	CHECK(search->run() == 0)
 
 #define SEARCH_TEST_CONFIRM()                                                                      \

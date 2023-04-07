@@ -28,8 +28,8 @@ private:
 	// TODO: Think of a think way to still able to use BlockState
 	std::vector<int> m_grid;
 	std::size_t m_height, m_width;
-
-	bool m_gui;
+	// TODO: Use priority queue
+	std::vector<kd::pair<int, int>> m_goals;
 
 	// SDL_Window *m_win      = nullptr;
 	// SDL_Renderer *m_ren    = nullptr;
@@ -37,10 +37,7 @@ private:
 	// const int m_win_width  = 480;
 
 public:
-	// TODO: Use priority queue
-	std::vector<kd::pair<int, int>> m_goals;
-
-	Grid(int n, int m, bool gui = false) : m_height(n), m_width(m), m_gui(gui) {
+	Grid(int n, int m) : m_height(n), m_width(m) {
 		// count from 1
 		m_grid.resize(n * m);
 		std::fill(m_grid.begin(), m_grid.end(), BlockState::EMPTY);
@@ -84,6 +81,8 @@ public:
 
 	inline int height() const { return m_height; }
 	inline int width() const { return m_width; }
+
+	const std::vector<kd::pair<int, int>> &goals() { return m_goals; };
 
 	inline void insert_block(const kd::pair<int, int> &p);
 	inline void insert_block(const int &x, const int &y);
