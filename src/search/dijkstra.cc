@@ -1,63 +1,48 @@
-#include "agent.hh"
-#include "e_action.hh"
-#include "e_block.hh"
-#include "grid.hh"
+#include "search/dijkstra.hh"
 
-#include <fmt/ostream.h>
-
-#include <algorithm>
-#include <map>
-#include <queue>
-#include <vector>
-
-int kd::Agent::dijkstra(kd::Grid &grid) {
-	/* std::priority_queue<kd::Cell, std::vector<kd::Cell>, decltype(grid.cell_cmp)> q(grid.cell_cmp);
-	 */
-	std::queue<kd::Cell> q;
-
-	std::map<kd::Cell, kd::pair<kd::Cell, Action>> parent;
-
-	parent[this->m_pos] = kd::pair<kd::Cell, Action>{
-			kd::Cell{-1, -1},
-      Action::NO_OP
-  };
-	q.push(this->m_pos);
-	grid[this->m_pos] = BlockState::VISIT;
-
-	// TODO: just use the first goal for now
-	const auto goal = grid.m_goals[0];
-	kd::Cell cur;
-	for (cur = q.front(); !q.empty(); cur = q.front()) {
-		q.pop();
-
-		if (cur == goal)
-			break;
-
-		for (const auto &c : kd::CellAdjs) {
-			const auto ncell = cur + c.fst;
-			if (!grid.cell_valid(ncell))
-				continue;
-			// odd number is either block or visited
-			if (grid[ncell] & 1)
-				continue;
-			// if not empty and already smaller
-			if (grid[ncell] != BlockState::EMPTY && grid[ncell] <= grid[cur] + 2)
-				continue;
-			grid[ncell] = grid[cur] + 2;
-			q.push(ncell);
-			++this->m_nnodes;
-			parent[ncell] = kd::pair<kd::Cell, Action>{cur, c.sec};
-		}
-
-		// set visited
-		++grid[cur];
-	}
-
-	if (grid[goal] == BlockState::EMPTY)
+int kd::Dijkstra::step() {
+	if (m_frontier.empty())
 		return 1;
-	cur = goal;
-	// Trace back the route
-	for (; cur != this->m_pos; this->m_path.emplace_back(parent[cur].sec), cur = parent[cur].fst)
+	m_cur = m_frontier.front();
+	m_frontier.pop();
+
+	if (m_cur == m_goal)
+		return 1;
+
+	for (const auto &c : kd::CellAdjs) {
+		const auto ncell = m_cur + c.fst;
+		if (!m_grid->cell_valid(ncell))
+			continue;
+		// odd number is either block or visited
+		if (m_grid->at(ncell) & 1)
+			continue;
+		// if not empty and already smaller
+		if (m_grid->at(ncell) != BlockState::EMPTY && m_grid->at(ncell) <= m_grid->at(m_cur) + 2)
+			continue;
+
+		m_grid->at(ncell) = m_grid->at(m_cur) + 2;
+		m_frontier.push(ncell);
+		++m_nnodes;
+		m_parent[ncell] = kd::pair<kd::Cell, Action>{m_cur, c.sec};
+	}
+	return 0;
+}
+
+int kd::Dijkstra::run() {
+	while (step() == 0)
+		;
+	if (m_cur != m_goal)
+		return 1;
+	for (; m_cur != m_agent->pos();
+	     m_path.emplace_back(m_parent[m_cur].sec), m_cur = m_parent[m_cur].fst)
 		;
 	return 0;
+}
+
+const int &kd::Dijkstra::nnodes() { return m_nnodes; }
+const std::vector<Action> &kd::Dijkstra::path() { return m_path; }
+
+void kd::Dijkstra::print_path() {
+	for (std::size_t i = m_path.size(); i-- > 0; fmt::print("{}; ", this->m_path[i]))
+		;
 }

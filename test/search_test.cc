@@ -5,6 +5,8 @@
 #include "e_methods.hh"
 #include "fmt/core.h"
 #include "grid.hh"
+#include "isearch.hh"
+#include "search.hh"
 #include <algorithm>
 #include <tuple>
 
@@ -28,7 +30,8 @@ constexpr std::array<std::tuple<kd::Cell, int, int>, 7> blocks = {
 // TODO: add argument STATE to check for no solution maze
 #define SEARCH_TEST_INIT(METHOD)                                                                   \
 	kd::Grid grid(height, width);                                                                    \
-	kd::Agent a(start, METHOD);                                                                      \
+	kd::Agent a(start);                                                                              \
+	kd::ISearch *search = kd::get_search(METHOD, a, grid);                                           \
 	CHECK(a.pos() == start);                                                                         \
                                                                                                    \
 	for (const auto &g : goals)                                                                      \
@@ -37,13 +40,13 @@ constexpr std::array<std::tuple<kd::Cell, int, int>, 7> blocks = {
 	for (const auto &b : blocks)                                                                     \
 		grid.insert_block_area(std::get<0>(b), std::get<1>(b), std::get<2>(b));                        \
                                                                                                    \
-	CHECK(a.search(grid) == 0)
+	CHECK(search->run() == 0)
 
 #define SEARCH_TEST_CONFIRM()                                                                      \
 	kd::Cell s = a.pos();                                                                            \
 	CHECK(s == start);                                                                               \
-	for (std::size_t i = a.path().size(); i-- > 0;) {                                                \
-		auto action = a.path()[i];                                                                     \
+	for (std::size_t i = search->path().size(); i-- > 0;) {                                          \
+		auto action = search->path()[i];                                                               \
 		s += kd::CellFromDirection[action];                                                            \
 		if (grid[s] == BlockState::EMPTY)                                                              \
 			FAIL(fmt::format("The cell should not be empty after searched: ({}, {})", s.fst, s.sec));    \

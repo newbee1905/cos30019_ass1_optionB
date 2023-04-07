@@ -41,7 +41,7 @@ void kd::Grid::insert_goal(const Cell &p) { m_goals.push_back(p); }
 
 void kd::Grid::insert_goal(const int &x, const int &y) { m_goals.emplace_back(Cell{x, y}); }
 
-inline int &kd::Grid::at(const Cell &p) { return m_grid[p.fst * m_width + p.sec]; }
+int &kd::Grid::at(const Cell &p) { return m_grid[p.fst * m_width + p.sec]; }
 int &kd::Grid::at(const int &x, const int &y) { return m_grid[x * m_width + y]; }
 int &kd::Grid::operator[](const Cell &p) { return at(p); }
 

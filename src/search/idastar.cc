@@ -1,73 +1,68 @@
-#include "agent.hh"
-#include "e_action.hh"
-#include "e_block.hh"
-#include "grid.hh"
+#include "search/idastar.hh"
 
-#include <algorithm>
-#include <fmt/ostream.h>
+void kd::IDASTAR::reset() {
+	m_parent.clear();
+	m_grid->clear();
 
-#include <array>
-#include <cmath>
-#include <iterator>
-#include <map>
-#include <stack>
-#include <vector>
+	m_grid->at(m_agent->pos()) = BlockState::VISIT;
+	m_parent[m_agent->pos()]   = kd::pair<kd::Cell, Action>{
+      kd::Cell{-1, -1},
+      Action::NO_OP
+  };
+	m_frontier.push(m_agent->pos());
 
-int kd::Agent::idastar(kd::Grid &grid) {
-	kd::Cell cur;
-	std::map<kd::Cell, kd::pair<kd::Cell, Action>> parent;
+	m_threshold    = std::max(_min_threshold + 1, m_threshold);
+	_min_threshold = 0;
+}
 
-	// TODO: just use the first goal for now
-	const auto goal   = grid.m_goals[0];
-	grid[this->m_pos] = BlockState::VISIT;
-
-	int threshold     = grid.dist(this->m_pos, goal);
-	int min_threshold = 0;
-
-	for (; cur != goal; threshold = std::max(min_threshold + 1, threshold), min_threshold = 0) {
-		std::stack<kd::Cell> s;
-
-		parent.clear();
-		grid.clear();
-
-		grid[this->m_pos]   = BlockState::VISIT;
-		parent[this->m_pos] = kd::pair<kd::Cell, Action>{
-				kd::Cell{-1, -1},
-        Action::NO_OP
-    };
-		s.push(this->m_pos);
-
-		cur = s.top();
-		for (; !s.empty(); cur = s.top()) {
-			s.pop();
-
-			if (cur == goal)
-				break;
-
-			for (const auto &c : kd::DfsCellAdjs) {
-				const auto ncell = cur + c.fst;
-				if (!grid.cell_valid(ncell))
-					continue;
-				if (grid[ncell] >= BlockState::BLOCK)
-					continue;
-				const int estimate = grid[cur] + 1 + grid.dist(ncell, goal);
-				grid[ncell]        = grid[cur] + 1;
-				if (threshold < estimate) {
-					if (!min_threshold || min_threshold > estimate)
-						min_threshold = estimate;
-					continue;
-				}
-				s.push(ncell);
-				++this->m_nnodes;
-				parent[ncell] = kd::pair<kd::Cell, Action>{cur, c.sec};
-			}
-		}
-	}
-
-	if (cur != goal)
+int kd::IDASTAR::step() {
+	if (m_frontier.empty()) {
+		if (m_cur != m_goal)
+			return reset(), 0;
 		return 1;
-	// Trace back the route
-	for (; cur != this->m_pos; this->m_path.emplace_back(parent[cur].sec), cur = parent[cur].fst)
+	}
+	m_cur             = m_frontier.top();
+	m_grid->at(m_cur) = BlockState::VISIT;
+	m_frontier.pop();
+
+	if (m_cur == m_goal)
+		return 1;
+
+	for (const auto &c : kd::CellAdjs) {
+		const auto ncell = m_cur + c.fst;
+		if (!m_grid->cell_valid(ncell))
+			continue;
+		if (m_grid->at(ncell) >= BlockState::BLOCK)
+			continue;
+		const int estimate = m_grid->at(m_cur) + 1 + m_grid->dist(ncell, m_goal);
+		m_grid->at(ncell)  = m_grid->at(m_cur) + 1;
+		if (m_threshold < estimate) {
+			if (!_min_threshold || _min_threshold > estimate)
+				_min_threshold = estimate;
+			continue;
+		}
+		m_frontier.push(ncell);
+		++m_nnodes;
+		m_parent[ncell] = kd::pair<kd::Cell, Action>{m_cur, c.sec};
+	}
+	return 0;
+}
+
+int kd::IDASTAR::run() {
+	while (step() == 0)
+		;
+	if (m_cur != m_goal)
+		return 1;
+	for (; m_cur != m_agent->pos();
+	     m_path.emplace_back(m_parent[m_cur].sec), m_cur = m_parent[m_cur].fst)
 		;
 	return 0;
+}
+
+const int &kd::IDASTAR::nnodes() { return m_nnodes; }
+const std::vector<Action> &kd::IDASTAR::path() { return m_path; }
+
+void kd::IDASTAR::print_path() {
+	for (std::size_t i = m_path.size(); i-- > 0; fmt::print("{}; ", this->m_path[i]))
+		;
 }

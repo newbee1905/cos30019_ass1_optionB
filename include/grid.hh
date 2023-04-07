@@ -91,7 +91,7 @@ public:
 	void insert_goal(const kd::pair<int, int> &p);
 	void insert_goal(const int &x, const int &y);
 
-	inline int &at(const kd::pair<int, int> &p);
+	int &at(const kd::pair<int, int> &p);
 	int &at(const int &x, const int &y);
 	int &operator[](const kd::pair<int, int> &p);
 
