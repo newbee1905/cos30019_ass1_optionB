@@ -8,8 +8,7 @@
 #include <memory>
 
 namespace kd {
-ISearch *get_search(std::string_view method, std::shared_ptr<kd::Agent> &agent,
-                    std::shared_ptr<kd::Grid> &grid);
+std::shared_ptr<ISearch> get_search(std::string_view method, kd::Agent &agent, kd::Grid &grid);
 }; // namespace kd
 
 #endif // !SEARCH_HH

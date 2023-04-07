@@ -71,6 +71,9 @@ public:
 		m_grid.clear();
 		m_grid.shrink_to_fit();
 
+		m_goals.clear();
+		m_goals.shrink_to_fit();
+
 		// if (!m_gui)
 		// 	return;
 

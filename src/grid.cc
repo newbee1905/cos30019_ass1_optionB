@@ -37,7 +37,7 @@ void kd::Grid::insert_block_area(const int &x, const int &y, const int &w, const
 			insert_block(x + i, y + j);
 }
 
-void kd::Grid::insert_goal(const Cell &p) { m_goals.push_back(p); }
+void kd::Grid::insert_goal(const Cell &p) { m_goals.emplace_back(p); }
 
 void kd::Grid::insert_goal(const int &x, const int &y) { m_goals.emplace_back(Cell{x, y}); }
 

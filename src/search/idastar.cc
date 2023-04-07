@@ -2,16 +2,16 @@
 
 void kd::IDASTAR::reset() {
 	m_parent.clear();
-	m_grid->clear();
+	m_grid.clear();
 
-	m_grid->at(m_agent->pos()) = BlockState::VISIT;
-	m_parent[m_agent->pos()]   = kd::pair<kd::Cell, Action>{
-      kd::Cell{-1, -1},
+	m_grid[m_agent.pos()]   = BlockState::VISIT;
+	m_parent[m_agent.pos()] = kd::pair<kd::Cell, Action>{
+			kd::Cell{-1, -1},
       Action::NO_OP
   };
-	m_frontier.push(m_agent->pos());
+	m_frontier.push(m_agent.pos());
 
-	m_threshold    = std::max(_min_threshold + 1, m_threshold);
+	m_threshold    = std::max(_min_threshold, m_threshold);
 	_min_threshold = 0;
 }
 
@@ -21,8 +21,8 @@ int kd::IDASTAR::step() {
 			return reset(), 0;
 		return 1;
 	}
-	m_cur             = m_frontier.top();
-	m_grid->at(m_cur) = BlockState::VISIT;
+	m_cur         = m_frontier.top();
+	m_grid[m_cur] = BlockState::VISIT;
 	m_frontier.pop();
 
 	if (m_cur == m_goal)
@@ -30,12 +30,24 @@ int kd::IDASTAR::step() {
 
 	for (const auto &c : kd::CellAdjs) {
 		const auto ncell = m_cur + c.fst;
-		if (!m_grid->cell_valid(ncell))
+		if (!m_grid.cell_valid(ncell))
 			continue;
-		if (m_grid->at(ncell) >= BlockState::BLOCK)
+		if (m_grid[ncell] >= BlockState::BLOCK)
 			continue;
-		const int estimate = m_grid->at(m_cur) + 1 + m_grid->dist(ncell, m_goal);
-		m_grid->at(ncell)  = m_grid->at(m_cur) + 1;
+		/* grid[ncell] = BlockState::VISIT; */
+		m_frontier.push(ncell);
+		++m_nnodes;
+		m_parent[ncell] = kd::pair<kd::Cell, Action>{m_cur, c.sec};
+	}
+
+	for (const auto &c : kd::DfsCellAdjs) {
+		const auto ncell = m_cur + c.fst;
+		if (!m_grid.cell_valid(ncell))
+			continue;
+		if (m_grid[ncell] >= BlockState::BLOCK)
+			continue;
+		const int estimate = m_grid[m_cur] + 1 + m_grid.dist(ncell, m_goal);
+		m_grid[ncell]      = m_grid[m_cur] + 1;
 		if (m_threshold < estimate) {
 			if (!_min_threshold || _min_threshold > estimate)
 				_min_threshold = estimate;
@@ -53,7 +65,7 @@ int kd::IDASTAR::run() {
 		;
 	if (m_cur != m_goal)
 		return 1;
-	for (; m_cur != m_agent->pos();
+	for (; m_cur != m_agent.pos();
 	     m_path.emplace_back(m_parent[m_cur].sec), m_cur = m_parent[m_cur].fst)
 		;
 	return 0;

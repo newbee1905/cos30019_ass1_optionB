@@ -11,16 +11,16 @@ int kd::Dijkstra::step() {
 
 	for (const auto &c : kd::CellAdjs) {
 		const auto ncell = m_cur + c.fst;
-		if (!m_grid->cell_valid(ncell))
+		if (!m_grid.cell_valid(ncell))
 			continue;
 		// odd number is either block or visited
-		if (m_grid->at(ncell) & 1)
+		if (m_grid[ncell] & 1)
 			continue;
 		// if not empty and already smaller
-		if (m_grid->at(ncell) != BlockState::EMPTY && m_grid->at(ncell) <= m_grid->at(m_cur) + 2)
+		if (m_grid[ncell] != BlockState::EMPTY && m_grid[ncell] <= m_grid[m_cur] + 2)
 			continue;
 
-		m_grid->at(ncell) = m_grid->at(m_cur) + 2;
+		m_grid[ncell] = m_grid[m_cur] + 2;
 		m_frontier.push(ncell);
 		++m_nnodes;
 		m_parent[ncell] = kd::pair<kd::Cell, Action>{m_cur, c.sec};
@@ -33,7 +33,7 @@ int kd::Dijkstra::run() {
 		;
 	if (m_cur != m_goal)
 		return 1;
-	for (; m_cur != m_agent->pos();
+	for (; m_cur != m_agent.pos();
 	     m_path.emplace_back(m_parent[m_cur].sec), m_cur = m_parent[m_cur].fst)
 		;
 	return 0;

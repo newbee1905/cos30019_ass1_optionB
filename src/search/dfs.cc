@@ -3,8 +3,8 @@
 int kd::DFS::step() {
 	if (m_frontier.empty())
 		return 1;
-	m_cur             = m_frontier.top();
-	m_grid->at(m_cur) = BlockState::VISIT;
+	m_cur         = m_frontier.top();
+	m_grid[m_cur] = BlockState::VISIT;
 	m_frontier.pop();
 
 	if (m_cur == m_goal)
@@ -12,9 +12,9 @@ int kd::DFS::step() {
 
 	for (const auto &c : kd::DfsCellAdjs) {
 		const auto ncell = m_cur + c.fst;
-		if (!m_grid->cell_valid(ncell))
+		if (!m_grid.cell_valid(ncell))
 			continue;
-		if (m_grid->at(ncell) >= BlockState::BLOCK)
+		if (m_grid.at(ncell) >= BlockState::BLOCK)
 			continue;
 		/* grid[ncell] = BlockState::VISIT; */
 		m_frontier.push(ncell);
@@ -29,7 +29,7 @@ int kd::DFS::run() {
 		;
 	if (m_cur != m_goal)
 		return 1;
-	for (; m_cur != m_agent->pos();
+	for (; m_cur != m_agent.pos();
 	     m_path.emplace_back(m_parent[m_cur].sec), m_cur = m_parent[m_cur].fst)
 		;
 	return 0;

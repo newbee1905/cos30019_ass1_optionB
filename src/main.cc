@@ -64,22 +64,22 @@ signed main(int argc, char **argv) {
 	// size_t in windows is long long int
 	assert_line(fscanf(inp_file, "[%lld, %lld]\n", &n, &m), "Getting the grid's size");
 #endif
-	std::shared_ptr<kd::Grid> grid = std::make_shared<kd::Grid>(n, m);
+	kd::Grid grid(n, m);
 
 	kd::Cell pos;
 	assert_line(fscanf(inp_file, "(%d,%d)\n", &pos.sec, &pos.fst), "Getting the starting point");
-	std::shared_ptr<kd::Agent> a = std::make_shared<kd::Agent>(pos);
+	kd::Agent a(pos);
 
 	// use tmp to scanf after ')'
 	// to force to stop at the line for getting
 	// location of goals
 	for (int x{}, y{}, tmp{}; fscanf(inp_file, "(%d, %d)%c| ", &y, &x, CHAR(tmp));
-	     grid->insert_goal(x, y))
+	     grid.insert_goal(x, y))
 		;
 
 	for (int x{}, y{}, w{}, h{};
 	     fscanf(inp_file, "\n(%d, %d, %d, %d)", &y, &x, &w, &h) && !feof(inp_file);
-	     grid->insert_block_area(x, y, w, h))
+	     grid.insert_block_area(x, y, w, h))
 		;
 
 	fclose(inp_file);
@@ -89,14 +89,14 @@ signed main(int argc, char **argv) {
 		return 1;
 	}
 
-	grid->print();
+	grid.print();
 
 	if (search->run() != 0) {
 		fmt::print(stderr, "No solution found.");
 		return 1;
 	}
 
-	grid->print();
+	grid.print();
 
 	fmt::println("{} {} {}", inp_file_name, method, search->nnodes());
 	search->print_path();

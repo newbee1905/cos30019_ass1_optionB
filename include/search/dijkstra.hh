@@ -15,22 +15,21 @@ private:
 	std::queue<kd::Cell> m_frontier;
 	std::map<kd::Cell, kd::pair<kd::Cell, Action>> m_parent;
 	std::vector<Action> m_path;
-	std::shared_ptr<kd::Agent> m_agent;
-	std::shared_ptr<kd::Grid> m_grid;
+	kd::Agent &m_agent;
+	kd::Grid &m_grid;
 	kd::Cell m_goal, m_cur;
 	int m_nnodes;
 
 public:
-	Dijkstra(std::shared_ptr<kd::Agent> agent, std::shared_ptr<kd::Grid> grid)
-			: m_agent(agent), m_grid(grid), m_nnodes(1) {
-		m_cur           = m_agent->pos();
+	Dijkstra(kd::Agent &agent, kd::Grid &grid) : m_agent(agent), m_grid(grid), m_nnodes(1) {
+		m_cur           = m_agent.pos();
 		m_parent[m_cur] = kd::pair<kd::Cell, Action>{
 				kd::Cell{-1, -1},
         Action::NO_OP
     };
-		m_goal = m_grid->m_goals[0];
+		m_goal = m_grid.m_goals[0];
 		m_frontier.push(m_cur);
-		m_grid->at(m_cur) = BlockState::VISIT;
+		m_grid[m_cur] = BlockState::VISIT;
 	}
 
 	int step();

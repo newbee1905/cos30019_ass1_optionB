@@ -11,14 +11,13 @@ int kd::ASTAR::step() {
 
 	for (const auto &c : kd::CellAdjs) {
 		const auto ncell = m_cur + c.fst;
-		if (!m_grid->cell_valid(ncell))
+		if (!m_grid.cell_valid(ncell))
 			continue;
-		if (m_grid->at(ncell) == BlockState::BLOCK)
+		if (m_grid[ncell] == BlockState::BLOCK)
 			continue;
-		if (m_grid->at(ncell) != BlockState::EMPTY && m_grid->at(ncell) <= m_grid->at(m_cur) + 1)
+		if (m_grid[ncell] != BlockState::EMPTY && m_grid[ncell] <= m_grid[m_cur] + 1)
 			continue;
-		m_grid->at(ncell) =
-				m_grid->at(m_cur) + m_grid->dist(ncell, m_goal) - m_grid->dist(m_cur, m_goal) + 1;
+		m_grid[ncell] = m_grid[m_cur] + m_grid.dist(ncell, m_goal) - m_grid.dist(m_cur, m_goal) + 1;
 		m_frontier.push(ncell);
 		++m_nnodes;
 		m_parent[ncell] = kd::pair<kd::Cell, Action>{m_cur, c.sec};
@@ -31,7 +30,7 @@ int kd::ASTAR::run() {
 		;
 	if (m_cur != m_goal)
 		return 1;
-	for (; m_cur != m_agent->pos();
+	for (; m_cur != m_agent.pos();
 	     m_path.emplace_back(m_parent[m_cur].sec), m_cur = m_parent[m_cur].fst)
 		;
 	return 0;
