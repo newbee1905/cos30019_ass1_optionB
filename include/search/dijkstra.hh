@@ -36,6 +36,8 @@ public:
 	int run();
 	const int &nnodes();
 	const std::vector<Action> &path();
+	int reached_goal();
+	void trace_path();
 	void print_path();
 };
 } // namespace kd

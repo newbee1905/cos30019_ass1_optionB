@@ -63,6 +63,14 @@ int kd::IDASTAR::run() {
 const int &kd::IDASTAR::nnodes() { return m_nnodes; }
 const std::vector<Action> &kd::IDASTAR::path() { return m_path; }
 
+int kd::IDASTAR::reached_goal() { return m_cur == m_goal; }
+
+void kd::IDASTAR::trace_path() {
+	for (; m_cur != m_agent.pos();
+	     m_path.emplace_back(m_parent[m_cur].sec), m_cur = m_parent[m_cur].fst)
+		;
+}
+
 void kd::IDASTAR::print_path() {
 	for (std::size_t i = m_path.size(); i-- > 0; fmt::print("{}; ", this->m_path[i]))
 		;

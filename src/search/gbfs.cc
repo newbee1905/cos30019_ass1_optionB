@@ -37,6 +37,14 @@ int kd::GBFS::run() {
 const int &kd::GBFS::nnodes() { return m_nnodes; }
 const std::vector<Action> &kd::GBFS::path() { return m_path; }
 
+int kd::GBFS::reached_goal() { return m_cur == m_goal; }
+
+void kd::GBFS::trace_path() {
+	for (; m_cur != m_agent.pos();
+	     m_path.emplace_back(m_parent[m_cur].sec), m_cur = m_parent[m_cur].fst)
+		;
+}
+
 void kd::GBFS::print_path() {
 	for (std::size_t i = m_path.size(); i-- > 0; fmt::print("{}; ", this->m_path[i]))
 		;

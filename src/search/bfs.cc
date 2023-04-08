@@ -37,6 +37,14 @@ int kd::BFS::run() {
 const int &kd::BFS::nnodes() { return m_nnodes; }
 const std::vector<Action> &kd::BFS::path() { return m_path; }
 
+int kd::BFS::reached_goal() { return m_cur == m_goal; }
+
+void kd::BFS::trace_path() {
+	for (; m_cur != m_agent.pos();
+	     m_path.emplace_back(m_parent[m_cur].sec), m_cur = m_parent[m_cur].fst)
+		;
+}
+
 void kd::BFS::print_path() {
 	for (std::size_t i = m_path.size(); i-- > 0; fmt::print("{}; ", this->m_path[i]))
 		;

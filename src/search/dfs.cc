@@ -27,16 +27,22 @@ int kd::DFS::step() {
 int kd::DFS::run() {
 	while (step() == 0)
 		;
-	if (m_cur != m_goal)
+	if (!reached_goal())
 		return 1;
-	for (; m_cur != m_agent.pos();
-	     m_path.emplace_back(m_parent[m_cur].sec), m_cur = m_parent[m_cur].fst)
-		;
+	trace_path();
 	return 0;
 }
 
 const int &kd::DFS::nnodes() { return m_nnodes; }
 const std::vector<Action> &kd::DFS::path() { return m_path; }
+
+int kd::DFS::reached_goal() { return m_cur == m_goal; }
+
+void kd::DFS::trace_path() {
+	for (; m_cur != m_agent.pos();
+	     m_path.emplace_back(m_parent[m_cur].sec), m_cur = m_parent[m_cur].fst)
+		;
+}
 
 void kd::DFS::print_path() {
 	for (std::size_t i = m_path.size(); i-- > 0; fmt::print("{}; ", this->m_path[i]))

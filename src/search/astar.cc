@@ -39,6 +39,14 @@ int kd::ASTAR::run() {
 const int &kd::ASTAR::nnodes() { return m_nnodes; }
 const std::vector<Action> &kd::ASTAR::path() { return m_path; }
 
+int kd::ASTAR::reached_goal() { return m_cur == m_goal; }
+
+void kd::ASTAR::trace_path() {
+	for (; m_cur != m_agent.pos();
+	     m_path.emplace_back(m_parent[m_cur].sec), m_cur = m_parent[m_cur].fst)
+		;
+}
+
 void kd::ASTAR::print_path() {
 	for (std::size_t i = m_path.size(); i-- > 0; fmt::print("{}; ", this->m_path[i]))
 		;

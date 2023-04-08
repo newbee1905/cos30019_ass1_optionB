@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 #include <algorithm>
-#include <array>
+#include <iterator>
 #include <vector>
 
 // #include <SDL.h>
@@ -31,37 +31,12 @@ private:
 	// TODO: Use priority queue
 	std::vector<kd::pair<int, int>> m_goals;
 
-	// SDL_Window *m_win      = nullptr;
-	// SDL_Renderer *m_ren    = nullptr;
-	// const int m_win_height = 680;
-	// const int m_win_width  = 480;
-
 public:
 	Grid(int n, int m) : m_height(n), m_width(m) {
 		// count from 1
 		m_grid.resize(n * m);
 		std::fill(m_grid.begin(), m_grid.end(), BlockState::EMPTY);
-
-		// TODO: change gui mode with command line flags
-		// if (!m_gui)
-		// 	return;
-
-		// if (SDL_Init(SDL_INIT_VIDEO) != 0)
-		// 	throw std::runtime_error(fmt::format("SDL_Init Error: {}\n", SDL_GetError()));
-
-		// if (SDL_CreateWindowAndRenderer(m_win_width, m_win_height, 0, &m_win, &m_ren) != 0)
-		// 	throw std::runtime_error(fmt::format("Create window and renderer: {}", SDL_GetError()));
-
-		// /* SDL_SetWindowTitle(m_win, "Search Visualizer"); */
 	}
-
-	// TODO: uodate the visualizer
-	// - Maybe using separate thread so that it would not make the search too slow
-	// - If implement it in the search function -> require sleep so that the window would not close
-	// too soon
-	// - Maybe a cache system with queue?
-	// 	- A seperate storage for visualizer??? -> have functions for the user to go back or forward
-	void gui_update();
 
 	~Grid() {
 		// free vector
@@ -70,13 +45,6 @@ public:
 
 		m_goals.clear();
 		m_goals.shrink_to_fit();
-
-		// if (!m_gui)
-		// 	return;
-
-		// SDL_DestroyRenderer(m_ren);
-		// SDL_DestroyWindow(m_win);
-		// SDL_Quit();
 	}
 
 	inline int height() const { return m_height; }
