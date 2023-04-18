@@ -4,8 +4,7 @@
 #include "e_action.hh"
 #include "e_methods.hh"
 namespace kd {
-class ISearch {
-public:
+struct ISearch {
 	virtual int step()                        = 0;
 	virtual int run()                         = 0;
 	virtual const int &nnodes()               = 0;
