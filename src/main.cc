@@ -6,8 +6,8 @@
 #include <string>
 #include <string_view>
 
-#include <SDL.h>
-#include <fmt/core.h>
+#include "SDL.h"
+#include "fmt/core.h"
 
 #include "agent.hh"
 #include "e_action.hh"
@@ -134,12 +134,14 @@ signed main(int argc, char **argv) {
 					if (!done)
 						done = search->step();
 					else {
-						if (!traced && !search->reached_goal()) {
-							quit = 1;
+						if (traced == 0 && !search->reached_goal()) {
+							traced = -1;
+							quit   = 1;
 						}
-						if (!traced)
+						if (traced == 0) {
 							search->trace_path();
-						traced = 1;
+							traced = 1;
+						}
 					}
 					break;
 				case SDLK_q:
@@ -223,7 +225,7 @@ signed main(int argc, char **argv) {
 
 	grid.print();
 
-	if (!traced) {
+	if (traced == -1) {
 		fmt::print(stderr, "No solution found.");
 		return 1;
 	}
