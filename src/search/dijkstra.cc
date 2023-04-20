@@ -25,6 +25,9 @@ int kd::Dijkstra::step() {
 		++m_nnodes;
 		m_parent[ncell] = kd::pair<kd::Cell, Action>{m_cur, c.sec};
 	}
+
+	// set visited
+	++m_grid[m_cur];
 	return 0;
 }
 
