@@ -98,18 +98,18 @@ void kd::Grid::gen(const Cell &start) {
 }
 
 void kd::Grid::write_gen(const int &x, const int &y) {
-	fmt::println("[{},{}]", m_height, m_width);
-	fmt::println("({},{})", y, x);
+	fmt::println("[{},{}]\r", m_height, m_width);
+	fmt::println("({},{})\r", y, x);
 	for (int i = 0; i < m_goals.size(); ++i) {
 		const auto g = m_goals[i];
 		fmt::print("({},{})", g.sec, g.fst);
 		if (i > 0)
 			fmt::print(" | ");
 	}
-	fmt::print("\n");
+	fmt::println("\r");
 	for (int i = 0; i < m_height; ++i)
 		for (int j = 0; j < m_height; ++j)
 			if (this->at(i, j) == BlockState::BLOCK)
-				fmt::println("({},{},1,1)", j, i);
+				fmt::println("({},{},1,1)\r", j, i);
 }
 void kd::Grid::write_gen(const Cell &start) { write_gen(start.fst, start.sec); }
