@@ -1,5 +1,4 @@
 #include "agent.hh"
-#include "doctest/doctest.h"
 #include "e_action.hh"
 #include "e_block.hh"
 #include "e_methods.hh"
@@ -9,6 +8,8 @@
 #include "search.hh"
 #include <algorithm>
 #include <tuple>
+#define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#include "doctest/doctest.h"
 
 constexpr int height                    = 5;
 constexpr int width                     = 11;
@@ -39,8 +40,11 @@ constexpr std::array<std::tuple<kd::Cell, int, int>, 7> blocks = {
 	for (const auto &b : blocks)                                                                     \
 		grid.insert_block_area(std::get<0>(b), std::get<1>(b), std::get<2>(b));                        \
                                                                                                    \
-	auto search = kd::get_search(METHOD, a, grid);                                                   \
-	CHECK(search->run() == 0)
+	auto t_start = std::chrono::high_resolution_clock::now();                                        \
+	auto search  = kd::get_search(METHOD, a, grid);                                                  \
+	CHECK(search->run() == 0);                                                                       \
+	auto t_end = std::chrono::high_resolution_clock::now();                                          \
+	MESSAGE("Time: ", std::chrono::duration<double, std::milli>(t_end - t_start).count(), "ms")
 
 #define SEARCH_TEST_CONFIRM()                                                                      \
 	kd::Cell s = a.pos();                                                                            \

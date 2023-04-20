@@ -11,43 +11,34 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include "doctest/doctest.h"
 
-constexpr int height                    = 5;
-constexpr int width                     = 11;
-constexpr kd::Cell start                = kd::Cell{1, 0};
-constexpr std::array<kd::Cell, 2> goals = {
-		kd::Cell{0,  7},
-    kd::Cell{3, 10}
-};
-constexpr std::array<std::tuple<kd::Cell, int, int>, 8> blocks = {
-		std::tuple<kd::Cell, int, int>{ kd::Cell{0, 2}, 2, 2},
-		std::tuple<kd::Cell, int, int>{ kd::Cell{2, 0}, 2, 2},
-		std::tuple<kd::Cell, int, int>{ kd::Cell{0, 8}, 1, 2},
-		std::tuple<kd::Cell, int, int>{kd::Cell{0, 10}, 1, 1},
-		std::tuple<kd::Cell, int, int>{ kd::Cell{3, 2}, 1, 2},
-		std::tuple<kd::Cell, int, int>{ kd::Cell{4, 3}, 3, 1},
-		std::tuple<kd::Cell, int, int>{ kd::Cell{3, 9}, 1, 1},
-		std::tuple<kd::Cell, int, int>{ kd::Cell{4, 8}, 2, 1},
-};
+constexpr int height     = 5000;
+constexpr int width      = 5000;
+constexpr kd::Cell start = kd::Cell{1, 0};
+
+kd::Grid grid_test(height, width, 1);
+bool __init_grid__ = false;
+
+kd::Grid init_grid() {
+	if (!__init_grid__) {
+		grid_test.gen(start);
+		__init_grid__ = true;
+	}
+	return grid_test;
+}
 
 // TODO: add argument STATE to check for no solution maze
 #define SEARCH_TEST_INIT(METHOD)                                                                   \
-	kd::Grid grid(height, width);                                                                    \
+	kd::Grid grid = init_grid();                                                                     \
 	kd::Agent a(start);                                                                              \
 	CHECK(a.pos() == start);                                                                         \
                                                                                                    \
-	for (const auto &g : goals)                                                                      \
-		grid.insert_goal(g);                                                                           \
-                                                                                                   \
-	for (const auto &b : blocks)                                                                     \
-		grid.insert_block_area(std::get<0>(b), std::get<1>(b), std::get<2>(b));                        \
-                                                                                                   \
 	auto t_start = std::chrono::high_resolution_clock::now();                                        \
 	auto search  = kd::get_search(METHOD, a, grid);                                                  \
-	CHECK(search->run() == 1);                                                                       \
+	CHECK(search->run() == 0);                                                                       \
 	auto t_end = std::chrono::high_resolution_clock::now();                                          \
 	MESSAGE("Time: ", std::chrono::duration<double, std::milli>(t_end - t_start).count(), "ms")
 
-#define SEARCH_FAIL_TEST_CONFIRM()                                                                 \
+#define SEARCH_TEST_CONFIRM()                                                                      \
 	kd::Cell s = a.pos();                                                                            \
 	CHECK(s == start);                                                                               \
 	for (std::size_t i = search->path().size(); i-- > 0;) {                                          \
@@ -57,35 +48,35 @@ constexpr std::array<std::tuple<kd::Cell, int, int>, 8> blocks = {
 			FAIL(fmt::format("The cell should not be empty after searched: ({}, {})", s.fst, s.sec));    \
 	}                                                                                                \
                                                                                                    \
-	auto check = std::find(goals.begin(), goals.end(), s);                                           \
-	CHECK(check == goals.end())
+	auto check = std::find(grid.goals().begin(), grid.goals().end(), s);                             \
+	CHECK(check != grid.goals().end())
 
 TEST_CASE("DFS") {
 	SEARCH_TEST_INIT("DFS");
-	SEARCH_FAIL_TEST_CONFIRM();
+	SEARCH_TEST_CONFIRM();
 }
 
 TEST_CASE("BFS") {
 	SEARCH_TEST_INIT("BFS");
-	SEARCH_FAIL_TEST_CONFIRM();
+	SEARCH_TEST_CONFIRM();
 }
 
 TEST_CASE("GBFS") {
 	SEARCH_TEST_INIT("GBFS");
-	SEARCH_FAIL_TEST_CONFIRM();
+	SEARCH_TEST_CONFIRM();
 }
 
 TEST_CASE("ASTAR") {
 	SEARCH_TEST_INIT("AS");
-	SEARCH_FAIL_TEST_CONFIRM();
+	SEARCH_TEST_CONFIRM();
 }
 
 TEST_CASE("DIJKSTRA") {
 	SEARCH_TEST_INIT("CUS1");
-	SEARCH_FAIL_TEST_CONFIRM();
+	SEARCH_TEST_CONFIRM();
 }
 
 TEST_CASE("IDASTAR") {
 	SEARCH_TEST_INIT("CUS2");
-	SEARCH_FAIL_TEST_CONFIRM();
+	SEARCH_TEST_CONFIRM();
 }

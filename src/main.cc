@@ -8,6 +8,7 @@
 #include <string_view>
 
 #include "SDL.h"
+#include "fmt/chrono.h"
 #include "fmt/core.h"
 
 #include "agent.hh"
@@ -45,7 +46,6 @@
 #endif
 
 signed main(int argc, char **argv) {
-
 	if (argc < 3) {
 		fmt::print(stderr, "Not enough arguments. "
 		                   "Please use: search <FILEPATH> <METHOD>\n");
@@ -78,7 +78,7 @@ signed main(int argc, char **argv) {
 	// to force to stop at the line for getting
 	// location of goals
 	for (int x{}, y{}, tmp{}; fscanf(inp_file, "(%d, %d)%c| ", &y, &x, CHAR(tmp));
-	     grid.insert_goal(x, y))
+	     grid.insert_goal(x, y), fmt::println("{}, {}", x, y))
 		;
 
 	for (int x{}, y{}, w{}, h{};
@@ -126,16 +126,22 @@ signed main(int argc, char **argv) {
 	std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> ren(
 			SDL_CreateRenderer(win.get(), 0, 0), SDL_DestroyRenderer);
 
+	std::chrono::system_clock::time_point t_start, t_end;
+	double elapsed_time = 0;
+
 	int traced = 0;
-	for (int quit = 0, step = 0, done = 0; !quit;) {
+	for (int quit = 0, done = 0; !quit;) {
 		for (SDL_Event e; SDL_PollEvent(&e);) {
 			switch (e.type) {
 			case SDL_KEYDOWN:
 				switch (e.key.keysym.sym) {
 				case SDLK_SPACE:
-					if (!done)
-						done = search->step();
-					else {
+					if (!done) {
+						t_start = std::chrono::high_resolution_clock::now();
+						done    = search->step();
+						t_end   = std::chrono::high_resolution_clock::now();
+						elapsed_time += std::chrono::duration<double, std::milli>(t_end - t_start).count();
+					} else {
 						if (traced == 0 && !search->reached_goal()) {
 							traced = -1;
 							quit   = 1;
@@ -236,6 +242,8 @@ signed main(int argc, char **argv) {
 
 	fmt::println("{} {} {}", inp_file_name, method, search->nnodes());
 	search->print_path();
+
+	fmt::print("\n{}ms", elapsed_time);
 
 	SDL_Quit();
 }

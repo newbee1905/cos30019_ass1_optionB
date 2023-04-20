@@ -32,10 +32,11 @@ private:
 	std::vector<kd::pair<int, int>> m_goals;
 
 public:
-	Grid(int n, int m) : m_height(n), m_width(m) {
+	Grid(int n, int m, int gen = 0) : m_height(n), m_width(m) {
 		// count from 1
 		m_grid.resize(n * m);
-		std::fill(m_grid.begin(), m_grid.end(), BlockState::EMPTY);
+		// if genrating mode on -> fill grid with block
+		std::fill(m_grid.begin(), m_grid.end(), gen);
 	}
 
 	~Grid() {
@@ -67,6 +68,14 @@ public:
 
 	void print();
 	void clear();
+
+	// get starting point to generate maze
+	void gen(const int &x, const int &y);
+	void gen(const Cell &start);
+
+	// write out grid to test files
+	void write_gen(const int &x, const int &y);
+	void write_gen(const Cell &start);
 
 	std::function<bool(const Cell &, const Cell &)> cell_cmp = [this](const kd::Cell &a,
 	                                                                  const kd::Cell &b) -> bool {

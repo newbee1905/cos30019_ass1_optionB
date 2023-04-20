@@ -1,7 +1,10 @@
 #include "grid.hh"
+#include "e_action.hh"
 #include "e_block.hh"
 #include <fmt/ostream.h>
 #include <functional>
+#include <random>
+#include <stack>
 
 void kd::operator+=(kd::Cell &lhs, const kd::Cell &rhs) {
 	lhs.fst += rhs.fst;
@@ -60,3 +63,53 @@ void kd::Grid::clear() {
 			if (this->at(i, j) >= BlockState::VISIT)
 				this->at(i, j) = BlockState::EMPTY;
 }
+
+void kd::Grid::gen(const int &x, const int &y) { gen(Cell{x, y}); }
+void kd::Grid::gen(const Cell &start) {
+	std::stack<kd::Cell> s;
+	Cell cur;
+	Cell max_dist = start;
+	s.push(start);
+	auto adjs = kd::CellAdjs;
+	while (!s.empty()) {
+		std::shuffle(std::begin(adjs), std::end(adjs), std::mt19937{std::random_device{}()});
+		cur           = s.top();
+		this->at(cur) = BlockState::EMPTY;
+		if (this->dist(cur, start) > this->dist(max_dist, start))
+			max_dist = cur;
+		s.pop();
+		for (int i = 0; i < 2; ++i) {
+			const auto c      = adjs[i];
+			const auto ncell  = cur + c.fst;
+			const auto nncell = ncell + c.fst;
+			if (!cell_valid(ncell))
+				continue;
+			if (this->at(ncell) == BlockState::EMPTY)
+				continue;
+			if (!cell_valid(nncell))
+				goto set_path;
+			if (this->at(nncell) == BlockState::EMPTY)
+				continue;
+		set_path:
+			s.push(ncell);
+		}
+	}
+	insert_goal(max_dist);
+}
+
+void kd::Grid::write_gen(const int &x, const int &y) {
+	fmt::println("[{},{}]", m_height, m_width);
+	fmt::println("({},{})", y, x);
+	for (int i = 0; i < m_goals.size(); ++i) {
+		const auto g = m_goals[i];
+		fmt::print("({},{})", g.sec, g.fst);
+		if (i > 0)
+			fmt::print(" | ");
+	}
+	fmt::print("\n");
+	for (int i = 0; i < m_height; ++i)
+		for (int j = 0; j < m_height; ++j)
+			if (this->at(i, j) == BlockState::BLOCK)
+				fmt::println("({},{},1,1)", j, i);
+}
+void kd::Grid::write_gen(const Cell &start) { write_gen(start.fst, start.sec); }
