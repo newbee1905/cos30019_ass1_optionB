@@ -1,5 +1,6 @@
 #include <stdio.h>
 
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <memory>
@@ -47,12 +48,13 @@ signed main(int argc, char **argv) {
 
 	if (argc < 3) {
 		fmt::print(stderr, "Not enough arguments. "
-		                   "Please use: ./search <FILEPATH> <METHOD>\n");
+		                   "Please use: search <FILEPATH> <METHOD>\n");
 		return 1;
 	}
 
-	const char *inp_file_name     = argv[1];
-	const std::string_view method = argv[2];
+	const char *inp_file_name = argv[1];
+	std::string method        = argv[2];
+	std::transform(method.begin(), method.end(), method.begin(), ::toupper);
 
 	FILE *inp_file;
 	FOPEN(inp_file, inp_file_name, "rb");
@@ -141,6 +143,8 @@ signed main(int argc, char **argv) {
 						if (traced == 0) {
 							search->trace_path();
 							traced = 1;
+						} else {
+							quit = 1;
 						}
 					}
 					break;
