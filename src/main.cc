@@ -126,7 +126,8 @@ signed main(int argc, char **argv) {
 	std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> ren(
 			SDL_CreateRenderer(win.get(), 0, 0), SDL_DestroyRenderer);
 
-	std::chrono::system_clock::time_point t_start, t_end;
+	auto t_start        = std::chrono::high_resolution_clock::now();
+	auto t_end          = std::chrono::high_resolution_clock::now();
 	double elapsed_time = 0;
 
 	int traced = 0;
