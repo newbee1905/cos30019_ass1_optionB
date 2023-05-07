@@ -19,6 +19,8 @@
 // smaller file
 namespace kd {
 
+std::string_view tolower_string(std::string_view str);
+
 /// No constructor custom struct
 /// Should have the best constructor possible
 /// from the compiler side

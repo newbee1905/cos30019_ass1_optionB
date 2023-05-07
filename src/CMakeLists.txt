@@ -1,6 +1,6 @@
 get_filename_component(APP search NAME)
-add_executable(${APP} main.cc)
+add_executable(${APP} main.cc gui.cc)
 add_executable(gen_test gen_test.cc)
-add_library(kd errors.cc grid.cc agent.cc search.cc search/dfs.cc search/bfs.cc search/gbfs.cc search/astar.cc search/dijkstra.cc search/idastar.cc)
+add_library(kd utils.cc errors.cc grid.cc agent.cc search.cc search/dfs.cc search/bfs.cc search/gbfs.cc search/astar.cc search/dijkstra.cc search/idastar.cc)
 target_link_libraries(${APP} kd)
 target_link_libraries(gen_test kd)

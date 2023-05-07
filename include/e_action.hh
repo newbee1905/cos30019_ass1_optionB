@@ -4,7 +4,7 @@
 #include "enums.hh"
 #include "grid.hh"
 
-ENUM_STR(Action, LEFT, RIGHT, UP, DOWN, NO_OP);
+ENUM_STR(Action, left, right, up, down, NO_OP);
 
 namespace kd {
 // Right and Down directions are bias
@@ -25,17 +25,17 @@ constexpr std::array<kd::Cell, 5> CellFromDirection = {
 // so reverse the order of directions we need to push
 // into the stack
 constexpr std::array<kd::pair<kd::Cell, Action>, 4> DfsCellAdjs = {
-		kd::pair<kd::Cell, Action>{ kd::Cell{0, 1}, Action::RIGHT},
-		kd::pair<kd::Cell, Action>{ kd::Cell{1, 0},  Action::DOWN},
-		kd::pair<kd::Cell, Action>{kd::Cell{0, -1},  Action::LEFT},
-		kd::pair<kd::Cell, Action>{kd::Cell{-1, 0},    Action::UP},
+		kd::pair<kd::Cell, Action>{ kd::Cell{0, 1}, Action::right},
+		kd::pair<kd::Cell, Action>{ kd::Cell{1, 0},  Action::down},
+		kd::pair<kd::Cell, Action>{kd::Cell{0, -1},  Action::left},
+		kd::pair<kd::Cell, Action>{kd::Cell{-1, 0},    Action::up},
 };
 
 constexpr std::array<kd::pair<kd::Cell, Action>, 4> CellAdjs = {
-		kd::pair<kd::Cell, Action>{kd::Cell{-1, 0},    Action::UP},
-		kd::pair<kd::Cell, Action>{kd::Cell{0, -1},  Action::LEFT},
-		kd::pair<kd::Cell, Action>{ kd::Cell{1, 0},  Action::DOWN},
-		kd::pair<kd::Cell, Action>{ kd::Cell{0, 1}, Action::RIGHT},
+		kd::pair<kd::Cell, Action>{kd::Cell{-1, 0},    Action::up},
+		kd::pair<kd::Cell, Action>{kd::Cell{0, -1},  Action::left},
+		kd::pair<kd::Cell, Action>{ kd::Cell{1, 0},  Action::down},
+		kd::pair<kd::Cell, Action>{ kd::Cell{0, 1}, Action::right},
 };
 
 }; // namespace kd
